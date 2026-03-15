@@ -89,13 +89,11 @@ func _physics_process(delta: float) -> void:
 	_update_sprite()
 	_update_camera_lookahead()
 
-
 func _update_timers(delta: float) -> void:
 	if combo_timer > 0:
 		combo_timer -= delta
 		if combo_timer <= 0:
 			attack_combo = 0
-
 
 func _update_invincibility(delta: float) -> void:
 	if invincible:
@@ -104,9 +102,7 @@ func _update_invincibility(delta: float) -> void:
 			invincible = false
 			modulate.a = 1.0
 		else:
-			# Flash effect
 			modulate.a = 0.5 + 0.5 * sin(invincible_timer * 30.0)
-
 
 func _regen_stamina(delta: float) -> void:
 	var s := GameManager.player_stats
@@ -135,7 +131,6 @@ func _handle_movement(delta: float) -> void:
 	else:
 		velocity = velocity.move_toward(Vector2.ZERO, FRICTION * delta)
 		state = State.IDLE
-
 	# Footstep sounds
 	if velocity.length() > 20.0:
 		var step_interval := 0.25 if state == State.SPRINT else 0.4
@@ -205,7 +200,7 @@ func _deal_attack_damage() -> void:
 	var s := GameManager.player_stats
 	var bodies := attack_area.get_overlapping_bodies()
 	var hit_something := false
-	var combo_mult := 1.0 + (attack_combo - 1) * 0.3
+	var combo_mult := 1.0 + (attack_combo - 1) * 0.4 # 1.0, 1.4, 1.8 — 3rd hit is BIG
 	var is_crit: bool = randf() < s.crit_chance
 
 	for body in bodies:
@@ -218,19 +213,37 @@ func _deal_attack_damage() -> void:
 			hit_something = true
 
 	if hit_something:
-		AudioManager.play_sfx("critical" if is_crit else "hit")
-		CameraManager.shake(5.0 + attack_combo * 2.0 if not is_crit else 10.0)
+		var is_finisher := attack_combo == 3
+		AudioManager.play_sfx("critical" if is_crit or is_finisher else "hit")
+		var shake_amount := 5.0 + attack_combo * 2.0
+		if is_crit:
+			shake_amount = 10.0
+		if is_finisher:
+			shake_amount = 12.0
+		CameraManager.shake(shake_amount)
 		# Update combo counter
 		var combo_ui := get_tree().get_first_node_in_group("combo_counter")
 		if combo_ui and combo_ui.has_method("register_hit"):
 			combo_ui.register_hit()
-		GameManager.request_hitstop(0.04 + attack_combo * 0.01)
-		# Spawn hit effect
+		GameManager.request_hitstop(0.04 + attack_combo * 0.02 if not is_finisher else 0.08)
+		# Spawn hit effect — bigger for finisher
 		var HitEffect := preload("res://scripts/effects/hit_effect.gd")
 		var effect := Node2D.new()
 		effect.set_script(HitEffect)
-		effect.setup(global_position + facing * 16.0, 6.0 if not is_crit else 12.0)
+		var hit_size := 6.0
+		if is_crit:
+			hit_size = 12.0
+		if is_finisher:
+			hit_size = 16.0
+		effect.setup(global_position + facing * 16.0, hit_size)
 		get_parent().add_child(effect)
+		# Finisher gets dust burst
+		if is_finisher:
+			var DustParticles := preload("res://scripts/effects/dust_particles.gd")
+			var dust := Node2D.new()
+			dust.set_script(DustParticles)
+			get_parent().add_child(dust)
+			dust.emit_burst(global_position + facing * 12.0, 12, Color(0.9, 0.8, 0.5, 0.7), 60.0)
 
 
 func _handle_attack_state(delta: float) -> void:
@@ -291,13 +304,11 @@ func _shoot_ranged() -> void:
 	get_parent().add_child(proj)
 	AudioManager.play_sfx("shoot")
 
-
 func _handle_dodge_state(delta: float) -> void:
 	dodge_timer -= delta
 	velocity = velocity.move_toward(Vector2.ZERO, FRICTION * 0.5 * delta)
 	if dodge_timer <= 0:
 		state = State.IDLE
-
 
 func _handle_hurt_state() -> void:
 	if hurt_timer > 0:
@@ -329,9 +340,7 @@ func take_damage(amount: int, from_dir: Vector2 = Vector2.ZERO) -> void:
 		invincible = true
 		invincible_timer = 0.5
 
-		# Spawn damage number
 		_spawn_damage_number(actual_dmg, false)
-
 
 func _die() -> void:
 	state = State.DEAD
@@ -351,10 +360,9 @@ func _spawn_damage_number(amount: int, is_crit: bool) -> void:
 	label.position = Vector2(-8, -20)
 	label.z_index = 100
 	add_child(label)
-
 	var tween := create_tween()
-	tween.tween_property(label, "position:y", label.position.y - 20, 0.5)
-	tween.parallel().tween_property(label, "modulate:a", 0.0, 0.5)
+	tween.tween_property(label, "position:y", -40.0, 0.5)
+	tween.parallel().tween_property(label, "modulate:a", 0.0, 0.5).from(1.0)
 	tween.tween_callback(label.queue_free)
 
 
