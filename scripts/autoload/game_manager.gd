@@ -68,6 +68,9 @@ func _process(delta: float) -> void:
 		time_of_day -= 1.0
 		day += 1
 		day_changed.emit(day)
+		# Auto-save on new day
+		if has_node("/root/SaveManager"):
+			SaveManager.save_game()
 
 	var was_night := is_night
 	is_night = time_of_day > 0.35 and time_of_day < 0.85

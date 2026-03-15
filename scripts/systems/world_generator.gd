@@ -265,12 +265,16 @@ func _generate_chunk(chunk: Vector2i) -> void:
 
 			ground_layer.set_cell(Vector2i(tx, ty), 0, ground_atlas)
 
+			# Clear spawn area (no obstacles near 0,0)
+			var dist_from_spawn := world_pos.length()
+			var in_spawn_zone := dist_from_spawn < 120.0
+
 			# Objects based on height + biome
-			if height > 0.35 and detail > 0.1:
+			if height > 0.35 and detail > 0.1 and not in_spawn_zone:
 				# Trees/obstacles
 				var obj_atlas := Vector2i(int(biome), 1)
 				object_layer.set_cell(Vector2i(tx, ty), 0, obj_atlas)
-			elif height < -0.45:
+			elif height < -0.45 and not in_spawn_zone:
 				# Water
 				var water_atlas := Vector2i(int(biome), 2)
 				ground_layer.set_cell(Vector2i(tx, ty), 0, water_atlas)

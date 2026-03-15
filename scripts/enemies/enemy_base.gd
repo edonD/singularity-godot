@@ -24,6 +24,8 @@ var _target: Node2D = null
 var _sprite: Sprite2D
 var _attack_cooldown: float = 0.0
 var _suspicion: float = 0.0
+var _health_bar: ProgressBar
+var _health_bar_visible: bool = false
 
 
 func _ready() -> void:
@@ -63,11 +65,41 @@ func _ready() -> void:
 	hurtbox.body_entered.connect(_on_body_entered)
 
 	_generate_sprite()
+	_create_health_bar()
 
 
 func _generate_sprite() -> void:
 	# Override in subclasses
 	pass
+
+
+func _create_health_bar() -> void:
+	_health_bar = ProgressBar.new()
+	_health_bar.custom_minimum_size = Vector2(16, 2)
+	_health_bar.max_value = max_hp
+	_health_bar.value = hp
+	_health_bar.show_percentage = false
+	_health_bar.position = Vector2(-8, -14)
+	_health_bar.size = Vector2(16, 2)
+	_health_bar.visible = false
+
+	var bg := StyleBoxFlat.new()
+	bg.bg_color = Color(0.15, 0.15, 0.15)
+	bg.set_corner_radius_all(0)
+	_health_bar.add_theme_stylebox_override("background", bg)
+
+	var fill := StyleBoxFlat.new()
+	fill.bg_color = Color(0.8, 0.15, 0.15)
+	fill.set_corner_radius_all(0)
+	_health_bar.add_theme_stylebox_override("fill", fill)
+
+	add_child(_health_bar)
+
+
+func _update_health_bar() -> void:
+	if _health_bar:
+		_health_bar.value = hp
+		_health_bar.visible = hp < max_hp and not _is_dead
 
 
 func _physics_process(delta: float) -> void:
@@ -149,6 +181,7 @@ func take_damage(amount: int, knockback_dir: Vector2, is_crit: bool = false) -> 
 	hp -= amount
 	_flash_timer = 0.2
 	_knockback_vel = knockback_dir * (200.0 * (1.0 - knockback_resistance))
+	_update_health_bar()
 
 	# Spawn damage number
 	_spawn_damage_number(amount, is_crit)
