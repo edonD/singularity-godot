@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://main001"]
+[gd_scene load_steps=10 format=3 uid="uid://main001"]
 
 [ext_resource type="Script" path="res://scripts/main/main.gd" id="1_main"]
 [ext_resource type="PackedScene" uid="uid://player001" path="res://scenes/player/Player.tscn" id="2_player"]
@@ -6,6 +6,9 @@
 [ext_resource type="Script" path="res://scripts/systems/enemy_spawner.gd" id="4_spawner"]
 [ext_resource type="PackedScene" uid="uid://hud001" path="res://scenes/ui/HUD.tscn" id="5_hud"]
 [ext_resource type="PackedScene" uid="uid://pause001" path="res://scenes/ui/PauseMenu.tscn" id="6_pause"]
+[ext_resource type="Script" path="res://scripts/systems/inventory.gd" id="7_inventory"]
+[ext_resource type="Script" path="res://scripts/systems/crafting.gd" id="8_crafting"]
+[ext_resource type="Script" path="res://scripts/ui/inventory_ui.gd" id="9_inv_ui"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_main")
@@ -21,9 +24,22 @@ position = Vector2(240, 135)
 [node name="EnemySpawner" type="Node2D" parent="Entities"]
 script = ExtResource("4_spawner")
 
+[node name="Systems" type="Node" parent="."]
+
+[node name="Inventory" type="Node" parent="Systems"]
+script = ExtResource("7_inventory")
+
+[node name="Crafting" type="Node" parent="Systems"]
+script = ExtResource("8_crafting")
+
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
 color = Color(1, 1, 1, 1)
 
 [node name="HUD" parent="." instance=ExtResource("5_hud")]
 
 [node name="PauseMenu" parent="." instance=ExtResource("6_pause")]
+
+[node name="InventoryUI" type="CanvasLayer" parent="."]
+layer = 15
+process_mode = 3
+script = ExtResource("9_inv_ui")

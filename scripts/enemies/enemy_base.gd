@@ -182,12 +182,34 @@ func _die() -> void:
 	GameManager.add_xp(xp_value)
 	AudioManager.play_sfx("death")
 	died.emit(self)
+	_drop_loot()
 
 	# Death animation
 	var tween := create_tween()
 	tween.tween_property(_sprite, "modulate", Color(1, 0, 0, 0), 0.3)
 	tween.parallel().tween_property(_sprite, "scale", Vector2(1.3, 0.3), 0.3)
 	tween.tween_callback(queue_free)
+
+
+func _drop_loot() -> void:
+	var ItemDropScene := preload("res://scenes/items/ItemDrop.tscn")
+	var loot_table: Array[Array] = [
+		["scrap_metal", 0.6, Color(0.5, 0.5, 0.55)],
+		["circuit_board", 0.3, Color(0.2, 0.6, 0.3)],
+		["battery", 0.15, Color(0.7, 0.7, 0.2)],
+		["wire", 0.4, Color(0.8, 0.4, 0.2)],
+		["bandage", 0.2, Color(0.9, 0.9, 0.9)],
+		["canned_food", 0.1, Color(0.6, 0.5, 0.3)],
+		["arrow", 0.25, Color(0.5, 0.4, 0.3)],
+	]
+
+	for entry in loot_table:
+		if randf() < float(entry[1]):
+			var drop: Area2D = ItemDropScene.instantiate()
+			drop.global_position = global_position + Vector2(randf_range(-8, 8), randf_range(-8, 8))
+			if drop.has_method("setup"):
+				drop.call_deferred("setup", entry[0], randi_range(1, 3), entry[2])
+			get_parent().call_deferred("add_child", drop)
 
 
 func _on_body_entered(body: Node2D) -> void:
