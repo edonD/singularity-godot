@@ -46,6 +46,30 @@ var recipes: Dictionary = {
 		"ingredients": {"canned_food": 1},
 		"tier": 0, "name": "Cooked Meat"
 	},
+	"antibiotics": {
+		"ingredients": {"scrap_metal": 2, "wire": 1},
+		"tier": 1, "name": "Antibiotics"
+	},
+	"splint": {
+		"ingredients": {"scrap_metal": 3, "wire": 2},
+		"tier": 1, "name": "Splint"
+	},
+	"burn_cream": {
+		"ingredients": {"scrap_metal": 2, "bandage": 1},
+		"tier": 1, "name": "Burn Cream"
+	},
+	"purified_water": {
+		"ingredients": {"water_bottle": 1, "scrap_metal": 1},
+		"tier": 1, "name": "Purified Water"
+	},
+	"thermal_wrap": {
+		"ingredients": {"scrap_metal": 5, "wire": 3},
+		"tier": 2, "name": "Thermal Wrap"
+	},
+	"sleeping_bag": {
+		"ingredients": {"scrap_metal": 4, "wire": 2},
+		"tier": 2, "name": "Sleeping Bag"
+	},
 }
 
 var inventory: Node = null # Set by main scene

@@ -103,6 +103,36 @@ func _init_item_database() -> void:
 			"weight": 0.1, "max_stack": 50, "type": "ammo",
 			"color": Color(0.5, 0.4, 0.3)
 		},
+		"antibiotics": {
+			"name": "Antibiotics", "desc": "Cures infections.",
+			"weight": 0.3, "max_stack": 5, "type": "medicine",
+			"color": Color(0.3, 0.7, 0.3), "cures": "infection"
+		},
+		"splint": {
+			"name": "Splint", "desc": "Fixes broken limbs.",
+			"weight": 0.5, "max_stack": 3, "type": "medicine",
+			"color": Color(0.6, 0.5, 0.3), "cures": "broken_limb"
+		},
+		"burn_cream": {
+			"name": "Burn Cream", "desc": "Treats burns and frostbite.",
+			"weight": 0.2, "max_stack": 5, "type": "medicine",
+			"color": Color(0.8, 0.7, 0.5), "cures": "burn"
+		},
+		"thermal_wrap": {
+			"name": "Thermal Wrap", "desc": "Insulates against cold. +20 body temp.",
+			"weight": 1.0, "max_stack": 1, "type": "equipment",
+			"color": Color(0.5, 0.3, 0.2), "temp_bonus": 20
+		},
+		"sleeping_bag": {
+			"name": "Sleeping Bag", "desc": "Rest anywhere. Restores sleep.",
+			"weight": 1.5, "max_stack": 1, "type": "equipment",
+			"color": Color(0.3, 0.3, 0.5), "rest": true
+		},
+		"purified_water": {
+			"name": "Purified Water", "desc": "Clean water. +40 thirst. No contamination.",
+			"weight": 0.4, "max_stack": 5, "type": "consumable",
+			"color": Color(0.4, 0.6, 0.9), "thirst": 40
+		},
 	}
 
 
@@ -210,8 +240,47 @@ func use_item(slot_idx: int) -> bool:
 			if data.has("thirst"):
 				s.thirst = minf(s.thirst + float(data.thirst), s.max_thirst)
 			AudioManager.play_sfx("pickup")
+			# Emotional: healing
+			var emo := get_tree().get_first_node_in_group("emotional_state")
+			if emo and emo.has_method("on_healing"):
+				emo.on_healing()
 			remove_item(item_id, 1)
 			return true
+		"medicine":
+			var survival := get_tree().get_first_node_in_group("survival")
+			if survival and data.has("cures"):
+				var injury_type: String = data.cures
+				if survival.has_method("heal_injury") and survival.has_injury(injury_type):
+					survival.heal_injury(injury_type)
+					AudioManager.play_sfx("pickup")
+					remove_item(item_id, 1)
+					return true
+				# Burn cream also heals frostbite
+				if injury_type == "burn" and survival.has_injury("frostbite"):
+					survival.heal_injury("frostbite")
+					AudioManager.play_sfx("pickup")
+					remove_item(item_id, 1)
+					return true
+			return false
+		"equipment":
+			if data.has("temp_bonus"):
+				var survival := get_tree().get_first_node_in_group("survival")
+				if survival:
+					survival.body_temp += float(data.temp_bonus)
+				AudioManager.play_sfx("click")
+				return true
+			if data.has("rest"):
+				var survival := get_tree().get_first_node_in_group("survival")
+				if survival:
+					survival.start_resting()
+					# Rest for a bit then stop
+					get_tree().create_timer(10.0).timeout.connect(func() -> void:
+						if survival:
+							survival.stop_resting()
+					)
+				AudioManager.play_sfx("click")
+				return true
+			return false
 		"weapon":
 			s.attack = 10 + int(data.get("attack_bonus", 0))
 			AudioManager.play_sfx("click")
