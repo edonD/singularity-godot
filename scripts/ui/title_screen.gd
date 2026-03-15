@@ -85,7 +85,7 @@ func _build_ui() -> void:
 
 	# Version
 	var version := Label.new()
-	version.text = "v0.1.0 — Godot 4.4"
+	version.text = "v2.0.0 — Godot 4.4"
 	version.add_theme_font_size_override("font_size", 6)
 	version.add_theme_color_override("font_color", Color(0.3, 0.3, 0.35))
 	version.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -122,7 +122,7 @@ func _draw() -> void:
 
 
 func _on_new_game() -> void:
-	get_tree().change_scene_to_file("res://scenes/main/Main.tscn")
+	get_tree().change_scene_to_file("res://scenes/ui/BackgroundSelect.tscn")
 
 
 func _on_continue() -> void:
