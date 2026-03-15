@@ -12,6 +12,8 @@ var kills_label: Label
 var xp_bar: ProgressBar
 var _low_hp_flash: float = 0.0
 var _vignette: ColorRect
+var emotion_label: Label
+var background_label: Label
 
 
 func _ready() -> void:
@@ -112,6 +114,19 @@ func _build_ui() -> void:
 		ab_label.add_theme_color_override("font_color", Color(0.4, 0.4, 0.5))
 		ability_hbox.add_child(ab_label)
 
+	# Emotional state + background
+	emotion_label = Label.new()
+	emotion_label.text = "Determined"
+	emotion_label.add_theme_font_size_override("font_size", 7)
+	emotion_label.add_theme_color_override("font_color", Color(0.6, 0.7, 0.8))
+	bottom_hbox.add_child(emotion_label)
+
+	background_label = Label.new()
+	background_label.text = "[Soldier]"
+	background_label.add_theme_font_size_override("font_size", 7)
+	background_label.add_theme_color_override("font_color", Color(0.5, 0.5, 0.6))
+	bottom_hbox.add_child(background_label)
+
 	# Minimap
 	var minimap_container := PanelContainer.new()
 	minimap_container.set_anchors_preset(Control.PRESET_TOP_RIGHT)
@@ -193,6 +208,20 @@ func _process(_delta: float) -> void:
 		day_label.add_theme_color_override("font_color", Color(0.9, 0.3, 0.3))
 	elif GameManager.day >= 4:
 		day_label.add_theme_color_override("font_color", Color(0.9, 0.7, 0.3))
+
+	# Update emotional state display
+	var dominant := GameManager.get_dominant_emotion()
+	var emotion_colors := {
+		"fear": Color(0.8, 0.6, 0.2),
+		"determination": Color(0.3, 0.7, 0.9),
+		"despair": Color(0.5, 0.3, 0.5),
+		"hope": Color(0.4, 0.8, 0.4),
+	}
+	emotion_label.text = dominant.capitalize()
+	emotion_label.add_theme_color_override("font_color", emotion_colors.get(dominant, Color(0.6, 0.6, 0.6)))
+
+	var bg_name: String = GameManager.player_stats.get("background", "soldier")
+	background_label.text = "[%s]" % bg_name.capitalize()
 
 	# Low HP vignette pulse
 	var s := GameManager.player_stats
