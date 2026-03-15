@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://main001"]
+[gd_scene load_steps=12 format=3 uid="uid://main001"]
 
 [ext_resource type="Script" path="res://scripts/main/main.gd" id="1_main"]
 [ext_resource type="PackedScene" uid="uid://player001" path="res://scenes/player/Player.tscn" id="2_player"]
@@ -9,6 +9,8 @@
 [ext_resource type="Script" path="res://scripts/systems/inventory.gd" id="7_inventory"]
 [ext_resource type="Script" path="res://scripts/systems/crafting.gd" id="8_crafting"]
 [ext_resource type="Script" path="res://scripts/ui/inventory_ui.gd" id="9_inv_ui"]
+[ext_resource type="Script" path="res://scripts/systems/survival.gd" id="10_survival"]
+[ext_resource type="Script" path="res://scripts/systems/day_night.gd" id="11_daynight"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_main")
@@ -31,6 +33,12 @@ script = ExtResource("7_inventory")
 
 [node name="Crafting" type="Node" parent="Systems"]
 script = ExtResource("8_crafting")
+
+[node name="Survival" type="Node" parent="Systems"]
+script = ExtResource("10_survival")
+
+[node name="DayNight" type="Node" parent="Systems"]
+script = ExtResource("11_daynight")
 
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
 color = Color(1, 1, 1, 1)
