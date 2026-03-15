@@ -199,3 +199,19 @@ func _summon_help() -> void:
 		drone.global_position = global_position + Vector2(cos(angle), sin(angle)) * 30.0
 		get_parent().add_child(drone)
 	AudioManager.play_sfx("alert")
+
+
+func _drop_loot() -> void:
+	# Boss drops guaranteed high-tier loot
+	var ItemDropScene := preload("res://scenes/items/ItemDrop.tscn")
+	var boss_loot: Array[Array] = [
+		["circuit_board", 5, Color(0.2, 0.6, 0.3)],
+		["battery", 3, Color(0.7, 0.7, 0.2)],
+		["scrap_metal", 8, Color(0.5, 0.5, 0.55)],
+		["wire", 6, Color(0.8, 0.4, 0.2)],
+	]
+	for entry in boss_loot:
+		var drop: Area2D = ItemDropScene.instantiate()
+		drop.global_position = global_position + Vector2(randf_range(-12, 12), randf_range(-12, 12))
+		drop.call_deferred("setup", entry[0], entry[1], entry[2])
+		get_parent().call_deferred("add_child", drop)

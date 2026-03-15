@@ -127,9 +127,13 @@ func _hunt(delta: float) -> void:
 
 	if not _is_charging and dist < 80.0:
 		_charge_timer += delta
+		# Telegraph: flash red before charging
+		if _charge_timer > 0.4:
+			_sprite.modulate = Color(1.5, 0.5, 0.5) if fmod(_charge_timer, 0.15) > 0.075 else Color.WHITE
 		if _charge_timer > 0.8:
 			_is_charging = true
 			_charge_timer = 0.0
+			_sprite.modulate = Color.WHITE
 			AudioManager.play_sfx("alert")
 
 	if _is_charging:
