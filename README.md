@@ -48,7 +48,7 @@ V2 transforms Singularity Survivor from a solid action game into a deep, systems
 
 ## Current State
 
-**V2 complete — 64+ features, 64 script files, ~9,900 lines of code.**
+**V2 complete — 70+ features, 66 script files, ~10,500 lines of code.**
 
 | System | Status |
 |--------|--------|
@@ -99,6 +99,10 @@ V2 transforms Singularity Survivor from a solid action game into a deep, systems
 | Resource Nodes (berry, scrap, crystal) | Done |
 | Difficulty Scaling Indicator | Done |
 | Finisher Combo (3rd hit slam) | Done |
+| **Shelter Building (walls, doors, workbench, storage)** | **V2** |
+| **Dynamic World Events (supply drops, patrols, distress)** | **V2** |
+| **Medicine System (antibiotics, splints, burn cream)** | **V2** |
+| **Dynamic Player Appearance (background + equipment)** | **V2** |
 
 ## How to Play
 
@@ -116,6 +120,7 @@ V2 transforms Singularity Survivor from a solid action game into a deep, systems
 | **J** | Quest Journal |
 | **C** | Character Sheet |
 | **M** | World Map |
+| **B** | Build Mode (shelter construction) |
 | **1** | EMP Pulse (unlocks Lv3) |
 | **2** | Cloaking (unlocks Lv5) |
 | **3** | Signal Shield (unlocks Lv8) |
@@ -222,7 +227,7 @@ scripts/
 ## Tech
 
 - **Engine**: Godot 4.4.1
-- **Language**: GDScript — 64 files, ~9,900 lines, no script over 400 lines
+- **Language**: GDScript — 66 files, ~10,500 lines, no script over 400 lines
 - **Resolution**: 480x270 (16:9, 2x scaled to 960x540)
 - **Physics**: CharacterBody2D with 6 collision layers
 - **World**: Procedural TileMapLayer with FastNoiseLite (chunk-based)
@@ -230,5 +235,5 @@ scripts/
 - **Weather**: Dynamic rain/snow/fog/storm with particle rendering
 - **All art**: Generated programmatically — zero external assets
 - **Signals**: Decoupled event system throughout
-- **V2 Systems**: Skill tree, emotional state, dilemmas, dialogue, NEXUS AI director, POIs, puzzles, world map
-- **64+ features**: See system status table above
+- **V2 Systems**: Skill tree, emotional state, dilemmas, dialogue, NEXUS AI director, POIs, puzzles, world map, shelter building, dynamic events, medicine, equipment visuals
+- **70+ features**: See system status table above

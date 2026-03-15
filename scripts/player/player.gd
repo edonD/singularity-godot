@@ -198,7 +198,7 @@ func _deal_attack_damage() -> void:
 	if surv and surv.has_method("get_attack_modifier"):
 		melee_mult *= surv.get_attack_modifier()
 
-	var is_crit: bool = randf() < (s.crit_chance + crit_bonus)
+	var is_crit: bool = randf() < s.crit_chance
 
 	for body in bodies:
 		if body.is_in_group("enemies") and body.has_method("take_damage"):

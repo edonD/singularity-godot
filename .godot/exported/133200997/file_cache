@@ -5,7 +5,7 @@ res://scenes/enemies/PatrolBot.tscn::0845debd9a211d382f57c4958a322733::177360307
 res://scenes/enemies/ScoutDrone.tscn::a724e334cf4882a5855c7a3ba73d5986::1773603073::res://.godot/exported/133200997/export-c2c53dcafa30781eb855ac241d788bb9-ScoutDrone.scn
 res://scenes/enemies/Sentinel.tscn::1598b3b1961ed4924f7520083cda9994::1773604580::res://.godot/exported/133200997/export-2437c5cc058a58d559e9242f0a74396c-Sentinel.scn
 res://scenes/items/ItemDrop.tscn::99a8f4715ad2242002256c3e61d9e244::1773603585::res://.godot/exported/133200997/export-965fc495db59d52d39f47cee75c3310e-ItemDrop.scn
-res://scenes/main/Main.tscn::ca392352abb89f3cf08a5f6e4805e2e1::1773611129::res://.godot/exported/133200997/export-68a04552abb3f12a362e1db2098e38c9-Main.scn
+res://scenes/main/Main.tscn::3de21c21e0b36720bbb5ce28e93c0cba::1773611615::res://.godot/exported/133200997/export-68a04552abb3f12a362e1db2098e38c9-Main.scn
 res://scenes/player/Player.tscn::7918f29804237cebe87c14ad3a2db439::1773602579::res://.godot/exported/133200997/export-a4e9bb150591131ae307f440fab940ce-Player.scn
 res://scenes/ui/HUD.tscn::98a13ad62e25c69cadbdf6ec80a8b554::1773603383::res://.godot/exported/133200997/export-74b5c9848938f4eb9ebaf6fab3809318-HUD.scn
 res://scenes/ui/InventoryUI.tscn::5e2d75a5e45d4a62168114217bd86845::1773603584::res://.godot/exported/133200997/export-2612f56aea391e519c4ba3734a29c0f1-InventoryUI.scn
