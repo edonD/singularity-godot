@@ -181,8 +181,8 @@ func _spawn_poi_node(poi_id: String, pos: Vector2, template: Dictionary) -> void
 	# Draw a diamond/marker shape
 	for y in 16:
 		for x in 16:
-			var dx := abs(x - 8)
-			var dy := abs(y - 8)
+			var dx: int = abs(x - 8)
+			var dy: int = abs(y - 8)
 			if dx + dy <= 7:
 				img.set_pixel(x, y, color)
 			elif dx + dy == 8:

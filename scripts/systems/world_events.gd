@@ -101,7 +101,7 @@ func _spawn_patrol_sweep(player_pos: Vector2) -> void:
 		"res://scenes/enemies/PatrolBot.tscn",
 	]
 
-	var count := 3 + (_director.threat_level if _director else 1)
+	var count: int = 3 + (_director.threat_level if _director else 1)
 	for i in count:
 		var scene_path: String = enemy_scenes[randi() % enemy_scenes.size()]
 		var scene := load(scene_path)

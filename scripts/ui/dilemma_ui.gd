@@ -140,7 +140,7 @@ func _show_dilemma(dilemma: Dictionary) -> void:
 		btn_style.set_content_margin_all(5)
 		btn.add_theme_stylebox_override("normal", btn_style)
 
-		var idx := i
+		var idx: int = i
 		btn.pressed.connect(func() -> void: _on_choice(idx))
 		vbox.add_child(btn)
 

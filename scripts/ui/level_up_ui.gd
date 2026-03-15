@@ -82,7 +82,7 @@ func _show_level_up() -> void:
 		btn.text = "%s — %s" % [option.name, option.desc]
 		btn.add_theme_font_size_override("font_size", 9)
 
-		var opt := option # capture
+		var opt: Dictionary = option # capture
 		btn.pressed.connect(func() -> void:
 			_apply_upgrade(opt)
 		)

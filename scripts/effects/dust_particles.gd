@@ -39,7 +39,7 @@ func _process(delta: float) -> void:
 func _draw() -> void:
 	for p in particles:
 		if p.life > 0:
-			var alpha := p.life / p.max_life
+			var alpha: float = p.life / p.max_life
 			var c: Color = p.color
 			c.a *= alpha
 			draw_rect(Rect2(p.pos - Vector2(p.size, p.size) * 0.5, Vector2(p.size, p.size)), c)

@@ -5,7 +5,7 @@ res://scenes/enemies/PatrolBot.tscn::0845debd9a211d382f57c4958a322733::177360307
 res://scenes/enemies/ScoutDrone.tscn::a724e334cf4882a5855c7a3ba73d5986::1773603073::res://.godot/exported/133200997/export-c2c53dcafa30781eb855ac241d788bb9-ScoutDrone.scn
 res://scenes/enemies/Sentinel.tscn::1598b3b1961ed4924f7520083cda9994::1773604580::res://.godot/exported/133200997/export-2437c5cc058a58d559e9242f0a74396c-Sentinel.scn
 res://scenes/items/ItemDrop.tscn::99a8f4715ad2242002256c3e61d9e244::1773603585::res://.godot/exported/133200997/export-965fc495db59d52d39f47cee75c3310e-ItemDrop.scn
-res://scenes/main/Main.tscn::930a204fb19dc4cb80351e799200743f::1773607385::res://.godot/exported/133200997/export-68a04552abb3f12a362e1db2098e38c9-Main.scn
+res://scenes/main/Main.tscn::ca392352abb89f3cf08a5f6e4805e2e1::1773611129::res://.godot/exported/133200997/export-68a04552abb3f12a362e1db2098e38c9-Main.scn
 res://scenes/player/Player.tscn::7918f29804237cebe87c14ad3a2db439::1773602579::res://.godot/exported/133200997/export-a4e9bb150591131ae307f440fab940ce-Player.scn
 res://scenes/ui/HUD.tscn::98a13ad62e25c69cadbdf6ec80a8b554::1773603383::res://.godot/exported/133200997/export-74b5c9848938f4eb9ebaf6fab3809318-HUD.scn
 res://scenes/ui/InventoryUI.tscn::5e2d75a5e45d4a62168114217bd86845::1773603584::res://.godot/exported/133200997/export-2612f56aea391e519c4ba3734a29c0f1-InventoryUI.scn
@@ -17,3 +17,5 @@ res://scenes/world/LootCrate.tscn::c6f17984ab3946a3f6b17972a8a3161a::1773606285:
 res://scenes/world/NPC.tscn::32c2753fc1c2980cbc7d3f9afe1006c8::1773605300::res://.godot/exported/133200997/export-4ca81b7112477c3d068bd4bd74171416-NPC.scn
 res://scenes/world/ResourceNode.tscn::1d20721d7318082fb1d32f2770cd58ea::1773606647::res://.godot/exported/133200997/export-2611e223b2270784229151b17a79d512-ResourceNode.scn
 res://scenes/world/Terminal.tscn::3d34fd04e3a96db83fa9530b5735decf::1773604050::res://.godot/exported/133200997/export-4df02a883bf8b9df4408841d1601a2cd-Terminal.scn
+res://scenes/ui/BackgroundSelect.tscn::4b1a52ec772a1244575ee4e0b55636bf::1773609515::res://.godot/exported/133200997/export-a6ab35fbf9c29a4fec0cdcef87abd6fe-BackgroundSelect.scn
+res://scenes/world/EnvPuzzle.tscn::bc9f2eb8303bba414ab937a81339ceea::1773610584::res://.godot/exported/133200997/export-0c19897656e9ad4bcfcbd137900f1708-EnvPuzzle.scn

@@ -165,7 +165,7 @@ func _advance_puzzle() -> void:
 
 	# Check if we need materials
 	if _state == 0 and not config.condition.is_empty():
-		var parts := config.condition.split("_")
+		var parts: PackedStringArray = config.condition.split("_")
 		if parts.size() == 2:
 			var item_id: String = parts[0]
 			var amount := int(parts[1])

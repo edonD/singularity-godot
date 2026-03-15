@@ -133,7 +133,7 @@ func _update_detection(delta: float) -> void:
 	var effective_range := detection_range
 	var st := get_tree().get_first_node_in_group("skill_tree")
 	if st and st.has_method("get_effect_sum"):
-		var reduction := st.get_effect_sum("detection_reduction")
+		var reduction: float = st.get_effect_sum("detection_reduction")
 		effective_range *= (1.0 - reduction)
 	# Player cloaking/invincibility = can't detect
 	if _target.get("invincible") == true and dist > effective_range * 0.3:
