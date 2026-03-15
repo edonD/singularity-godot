@@ -154,46 +154,28 @@ func _handle_combat_input() -> void:
 
 
 func _start_attack() -> void:
-	var s := GameManager.player_stats
 	if combo_timer > 0 and attack_combo == 1:
-		state = State.ATTACK2
-		attack_combo = 2
-		attack_timer = ATTACK2_DURATION
+		state = State.ATTACK2; attack_combo = 2; attack_timer = ATTACK2_DURATION
 	elif combo_timer > 0 and attack_combo == 2:
-		state = State.ATTACK3
-		attack_combo = 3
-		attack_timer = ATTACK3_DURATION
+		state = State.ATTACK3; attack_combo = 3; attack_timer = ATTACK3_DURATION
 	else:
-		state = State.ATTACK
-		attack_combo = 1
-		attack_timer = ATTACK_DURATION
-
+		state = State.ATTACK; attack_combo = 1; attack_timer = ATTACK_DURATION
 	combo_timer = COMBO_WINDOW
-	velocity = facing * 60.0 # Lunge forward
-
-	# Position and enable attack hitbox
-	_position_attack_area()
+	velocity = facing * 60.0
+	attack_area.position = facing * 16.0
+	attack_area.rotation = facing.angle()
 	attack_shape.disabled = false
 	AudioManager.play_sfx("swing")
-
-	# Spawn attack trail
 	var AttackTrail := preload("res://scripts/effects/attack_trail.gd")
 	var trail := Node2D.new()
 	trail.set_script(AttackTrail)
 	get_parent().add_child(trail)
 	trail.setup(global_position, facing)
-
-	# Deal damage to enemies in area after a tiny delay
 	await get_tree().create_timer(0.05).timeout
 	if not is_inside_tree():
 		return
 	_deal_attack_damage()
 	attack_shape.disabled = true
-
-
-func _position_attack_area() -> void:
-	attack_area.position = facing * 16.0
-	attack_area.rotation = facing.angle()
 
 
 func _deal_attack_damage() -> void:
@@ -202,23 +184,19 @@ func _deal_attack_damage() -> void:
 	var hit_something := false
 	var combo_mult := 1.0 + (attack_combo - 1) * 0.4
 
-	# Skill tree checks
+	# Skill tree + emotional + injury modifiers
 	var st := get_tree().get_first_node_in_group("skill_tree")
-	var melee_mult := 1.0
-	var crit_bonus := 0.0
+	var melee_mult: float = 1.0
 	if st:
 		melee_mult = st.get_effect_value("melee_dmg_mult", 1.0)
-		# Berserker: below 30% HP = +50% damage
 		if st.has_skill("combat_berserker") and s.hp < s.max_hp * 0.3:
 			melee_mult *= 1.5
-		# Emotional modifiers
-		var emo_sys := get_tree().get_first_node_in_group("emotional_state")
-		if emo_sys and emo_sys.has_method("get_emotion_modifier"):
-			melee_mult *= emo_sys.get_emotion_modifier("attack")
-		# Survival injury modifier
-		var survival := get_tree().get_first_node_in_group("survival")
-		if survival and survival.has_method("get_attack_modifier"):
-			melee_mult *= survival.get_attack_modifier()
+	var emo_sys := get_tree().get_first_node_in_group("emotional_state")
+	if emo_sys and emo_sys.has_method("get_emotion_modifier"):
+		melee_mult *= emo_sys.get_emotion_modifier("attack")
+	var surv := get_tree().get_first_node_in_group("survival")
+	if surv and surv.has_method("get_attack_modifier"):
+		melee_mult *= surv.get_attack_modifier()
 
 	var is_crit: bool = randf() < (s.crit_chance + crit_bonus)
 
@@ -243,29 +221,18 @@ func _deal_attack_damage() -> void:
 	if hit_something:
 		var is_finisher := attack_combo == 3
 		AudioManager.play_sfx("critical" if is_crit or is_finisher else "hit")
-		var shake_amount := 5.0 + attack_combo * 2.0
-		if is_crit:
-			shake_amount = 10.0
-		if is_finisher:
-			shake_amount = 12.0
-		CameraManager.shake(shake_amount)
-		# Update combo counter
+		var shake_amt := 12.0 if is_finisher else (10.0 if is_crit else 5.0 + attack_combo * 2.0)
+		CameraManager.shake(shake_amt)
 		var combo_ui := get_tree().get_first_node_in_group("combo_counter")
 		if combo_ui and combo_ui.has_method("register_hit"):
 			combo_ui.register_hit()
-		GameManager.request_hitstop(0.04 + attack_combo * 0.02 if not is_finisher else 0.08)
-		# Spawn hit effect — bigger for finisher
+		GameManager.request_hitstop(0.08 if is_finisher else 0.04 + attack_combo * 0.02)
 		var HitEffect := preload("res://scripts/effects/hit_effect.gd")
 		var effect := Node2D.new()
 		effect.set_script(HitEffect)
-		var hit_size := 6.0
-		if is_crit:
-			hit_size = 12.0
-		if is_finisher:
-			hit_size = 16.0
+		var hit_size := 16.0 if is_finisher else (12.0 if is_crit else 6.0)
 		effect.setup(global_position + facing * 16.0, hit_size)
 		get_parent().add_child(effect)
-		# Finisher gets dust burst
 		if is_finisher:
 			var DustParticles := preload("res://scripts/effects/dust_particles.gd")
 			var dust := Node2D.new()
@@ -290,37 +257,26 @@ func _start_dodge() -> void:
 		return
 	s.stamina -= DODGE_COST
 	stamina_changed.emit(s.stamina, s.max_stamina)
-
 	state = State.DODGE
 	dodge_timer = DODGE_DURATION
 	invincible = true
 	invincible_timer = DODGE_DURATION
 	velocity = facing * DODGE_SPEED
 	AudioManager.play_sfx("dodge")
-
-	# Spawn dust particles
 	var DustParticles := preload("res://scripts/effects/dust_particles.gd")
 	var dust := Node2D.new()
 	dust.set_script(DustParticles)
 	get_parent().add_child(dust)
 	dust.emit_burst(global_position, 6, Color(0.5, 0.45, 0.35, 0.7), 40.0)
 
-
 func _shoot_ranged() -> void:
-	# Check for arrows in inventory
 	var inv := get_tree().get_first_node_in_group("inventory")
 	if inv and inv.has_method("has_item") and not inv.has_item("arrow"):
 		return
-
-	# Get aim direction toward mouse
 	var aim_dir := (get_global_mouse_position() - global_position).normalized()
 	facing = aim_dir
-
-	# Consume arrow
 	if inv and inv.has_method("remove_item"):
 		inv.remove_item("arrow", 1)
-
-	# Spawn projectile
 	var ProjectileScene := preload("res://scenes/effects/Projectile.tscn")
 	var proj: Area2D = ProjectileScene.instantiate()
 	proj.global_position = global_position + aim_dir * 12.0
@@ -359,6 +315,19 @@ func take_damage(amount: int, from_dir: Vector2 = Vector2.ZERO) -> void:
 
 	# Knockback
 	velocity = from_dir * 150.0
+
+	# Emotional response to damage
+	var emo := get_tree().get_first_node_in_group("emotional_state")
+	if emo and emo.has_method("on_player_damaged"):
+		emo.on_player_damaged(float(actual_dmg) / s.max_hp)
+	if s.hp < s.max_hp * 0.15 and emo and emo.has_method("on_near_death"):
+		emo.on_near_death()
+
+	# Bleeding injury chance on big hits
+	if actual_dmg > 15:
+		var survival := get_tree().get_first_node_in_group("survival")
+		if survival and survival.has_method("add_injury") and randf() < 0.25:
+			survival.add_injury("bleeding", 1)
 
 	if s.hp <= 0:
 		_die()
