@@ -32,6 +32,7 @@
 [ext_resource type="Script" path="res://scripts/systems/quest_journal.gd" id="31_journal"]
 [ext_resource type="Script" path="res://scripts/ui/journal_ui.gd" id="32_journal_ui"]
 [ext_resource type="Script" path="res://scripts/ui/character_sheet.gd" id="33_charsheet"]
+[ext_resource type="Script" path="res://scripts/ui/world_map_ui.gd" id="36_worldmap"]
 [ext_resource type="Script" path="res://scripts/systems/nexus_director.gd" id="34_nexus"]
 [ext_resource type="Script" path="res://scripts/systems/poi_system.gd" id="35_poi"]
 [ext_resource type="Script" path="res://scripts/ui/skill_tree_ui.gd" id="25_skilltree_ui"]
@@ -160,6 +161,11 @@ script = ExtResource("34_nexus")
 
 [node name="POISystem" type="Node" parent="Systems"]
 script = ExtResource("35_poi")
+
+[node name="WorldMapUI" type="CanvasLayer" parent="."]
+layer = 21
+process_mode = 3
+script = ExtResource("36_worldmap")
 
 [node name="SkillTreeUI" type="CanvasLayer" parent="."]
 layer = 20
