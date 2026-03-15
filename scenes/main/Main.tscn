@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://main001"]
+[gd_scene load_steps=24 format=3 uid="uid://main001"]
 
 [ext_resource type="Script" path="res://scripts/main/main.gd" id="1_main"]
 [ext_resource type="PackedScene" uid="uid://player001" path="res://scenes/player/Player.tscn" id="2_player"]
@@ -20,6 +20,8 @@
 [ext_resource type="Script" path="res://scripts/systems/structures.gd" id="18_structures"]
 [ext_resource type="Script" path="res://scripts/systems/ambient_audio.gd" id="19_ambient"]
 [ext_resource type="Script" path="res://scripts/ui/tutorial.gd" id="20_tutorial"]
+[ext_resource type="Script" path="res://scripts/ui/combo_counter.gd" id="21_combo"]
+[ext_resource type="Script" path="res://scripts/systems/status_effects.gd" id="22_status"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_main")
@@ -93,3 +95,10 @@ script = ExtResource("17_levelup")
 [node name="Tutorial" type="CanvasLayer" parent="."]
 layer = 19
 script = ExtResource("20_tutorial")
+
+[node name="ComboCounter" type="CanvasLayer" parent="."]
+layer = 16
+script = ExtResource("21_combo")
+
+[node name="StatusEffects" type="Node" parent="Systems"]
+script = ExtResource("22_status")

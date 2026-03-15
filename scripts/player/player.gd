@@ -220,6 +220,10 @@ func _deal_attack_damage() -> void:
 	if hit_something:
 		AudioManager.play_sfx("critical" if is_crit else "hit")
 		CameraManager.shake(5.0 + attack_combo * 2.0 if not is_crit else 10.0)
+		# Update combo counter
+		var combo_ui := get_tree().get_first_node_in_group("combo_counter")
+		if combo_ui and combo_ui.has_method("register_hit"):
+			combo_ui.register_hit()
 		GameManager.request_hitstop(0.04 + attack_combo * 0.01)
 		# Spawn hit effect
 		var HitEffect := preload("res://scripts/effects/hit_effect.gd")

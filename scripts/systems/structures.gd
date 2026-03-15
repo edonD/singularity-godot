@@ -69,10 +69,11 @@ func _create_cabin(pos: Vector2) -> void:
 
 	get_parent().add_child(root)
 
-	# Spawn items and NPC nearby
+	# Spawn items, NPC, and campfire nearby
 	_spawn_loot_nearby(pos, 2)
 	if randf() < 0.5:
 		_spawn_npc(pos + Vector2(30, 0))
+	_spawn_campfire(pos + Vector2(-25, 15))
 
 
 func _create_bunker(pos: Vector2) -> void:
@@ -256,3 +257,10 @@ func _spawn_npc(pos: Vector2) -> void:
 	var names: Array[String] = ["Marcus", "Elena", "Jin", "Sarah", "Dmitri", "Aisha"]
 	npc.npc_name = names[randi() % names.size()]
 	get_parent().call_deferred("add_child", npc)
+
+
+func _spawn_campfire(pos: Vector2) -> void:
+	var CampfireScene := preload("res://scenes/world/Campfire.tscn")
+	var fire: Area2D = CampfireScene.instantiate()
+	fire.global_position = pos
+	get_parent().call_deferred("add_child", fire)
