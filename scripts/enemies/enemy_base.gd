@@ -184,6 +184,11 @@ func _die() -> void:
 	died.emit(self)
 	_drop_loot()
 
+	# Report kill to mission manager
+	var mm := get_tree().get_first_node_in_group("mission_manager")
+	if mm and mm.has_method("report_kill"):
+		mm.report_kill(name)
+
 	# Death animation
 	var tween := create_tween()
 	tween.tween_property(_sprite, "modulate", Color(1, 0, 0, 0), 0.3)

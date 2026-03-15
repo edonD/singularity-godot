@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://main001"]
+[gd_scene load_steps=15 format=3 uid="uid://main001"]
 
 [ext_resource type="Script" path="res://scripts/main/main.gd" id="1_main"]
 [ext_resource type="PackedScene" uid="uid://player001" path="res://scenes/player/Player.tscn" id="2_player"]
@@ -11,6 +11,9 @@
 [ext_resource type="Script" path="res://scripts/ui/inventory_ui.gd" id="9_inv_ui"]
 [ext_resource type="Script" path="res://scripts/systems/survival.gd" id="10_survival"]
 [ext_resource type="Script" path="res://scripts/systems/day_night.gd" id="11_daynight"]
+[ext_resource type="Script" path="res://scripts/systems/mission_manager.gd" id="12_missions"]
+[ext_resource type="Script" path="res://scripts/systems/terminal_spawner.gd" id="13_terminals"]
+[ext_resource type="Script" path="res://scripts/ui/mission_notify.gd" id="14_mission_notify"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_main")
@@ -26,6 +29,9 @@ position = Vector2(240, 135)
 [node name="EnemySpawner" type="Node2D" parent="Entities"]
 script = ExtResource("4_spawner")
 
+[node name="TerminalSpawner" type="Node2D" parent="Entities"]
+script = ExtResource("13_terminals")
+
 [node name="Systems" type="Node" parent="."]
 
 [node name="Inventory" type="Node" parent="Systems"]
@@ -40,6 +46,9 @@ script = ExtResource("10_survival")
 [node name="DayNight" type="Node" parent="Systems"]
 script = ExtResource("11_daynight")
 
+[node name="MissionManager" type="Node" parent="Systems"]
+script = ExtResource("12_missions")
+
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
 color = Color(1, 1, 1, 1)
 
@@ -51,3 +60,7 @@ color = Color(1, 1, 1, 1)
 layer = 15
 process_mode = 3
 script = ExtResource("9_inv_ui")
+
+[node name="MissionNotify" type="CanvasLayer" parent="."]
+layer = 18
+script = ExtResource("14_mission_notify")

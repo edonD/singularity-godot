@@ -13,6 +13,7 @@ func _ready() -> void:
 	inventory_ui.inventory = inventory
 	inventory_ui.crafting = crafting
 	inventory.add_to_group("inventory")
+	$Systems/MissionManager.add_to_group("mission_manager")
 
 	# Give player some starter items
 	inventory.add_item("bandage", 3)
