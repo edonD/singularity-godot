@@ -29,6 +29,8 @@
 [ext_resource type="Script" path="res://scripts/ui/dilemma_ui.gd" id="28_dilemma_ui"]
 [ext_resource type="Script" path="res://scripts/systems/dialogue_system.gd" id="29_dialogue"]
 [ext_resource type="Script" path="res://scripts/ui/dialogue_ui.gd" id="30_dialogue_ui"]
+[ext_resource type="Script" path="res://scripts/systems/quest_journal.gd" id="31_journal"]
+[ext_resource type="Script" path="res://scripts/ui/journal_ui.gd" id="32_journal_ui"]
 [ext_resource type="Script" path="res://scripts/ui/skill_tree_ui.gd" id="25_skilltree_ui"]
 
 [node name="Main" type="Node2D"]
@@ -136,6 +138,14 @@ script = ExtResource("29_dialogue")
 layer = 23
 process_mode = 3
 script = ExtResource("30_dialogue_ui")
+
+[node name="QuestJournal" type="Node" parent="Systems"]
+script = ExtResource("31_journal")
+
+[node name="JournalUI" type="CanvasLayer" parent="."]
+layer = 20
+process_mode = 3
+script = ExtResource("32_journal_ui")
 
 [node name="SkillTreeUI" type="CanvasLayer" parent="."]
 layer = 20
