@@ -23,6 +23,8 @@
 [ext_resource type="Script" path="res://scripts/ui/combo_counter.gd" id="21_combo"]
 [ext_resource type="Script" path="res://scripts/systems/status_effects.gd" id="22_status"]
 [ext_resource type="Script" path="res://scripts/systems/weather.gd" id="23_weather"]
+[ext_resource type="Script" path="res://scripts/systems/skill_tree.gd" id="24_skilltree"]
+[ext_resource type="Script" path="res://scripts/ui/skill_tree_ui.gd" id="25_skilltree_ui"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_main")
@@ -107,3 +109,11 @@ script = ExtResource("22_status")
 [node name="Weather" type="CanvasLayer" parent="."]
 layer = 5
 script = ExtResource("23_weather")
+
+[node name="SkillTree" type="Node" parent="Systems"]
+script = ExtResource("24_skilltree")
+
+[node name="SkillTreeUI" type="CanvasLayer" parent="."]
+layer = 20
+process_mode = 3
+script = ExtResource("25_skilltree_ui")

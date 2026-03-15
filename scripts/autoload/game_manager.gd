@@ -35,6 +35,33 @@ var player_stats: Dictionary = {
 	"speed": 120.0,
 	"sprint_speed": 200.0,
 	"crit_chance": 0.1,
+	"background": "soldier", # soldier, scientist, survivalist
+}
+
+# Emotional state system — ranges 0-100
+var emotional_state: Dictionary = {
+	"fear": 20,
+	"determination": 50,
+	"despair": 10,
+	"hope": 40,
+}
+
+# Morality tracking — not good/evil, but pragmatic/compassionate/ruthless
+var morality: Dictionary = {
+	"pragmatic": 0,
+	"compassionate": 0,
+	"ruthless": 0,
+}
+
+# Dilemma history
+var dilemma_history: Array[Dictionary] = [] # [{id, choice, day}]
+
+# NEXUS awareness — how much NEXUS knows about you
+var nexus_awareness: float = 0.0
+var nexus_adaptation: Dictionary = {
+	"stealth_counter": 0, # thermal sensors deployed
+	"combat_counter": 0, # sentinels sent
+	"hoard_counter": 0, # harvesters sent to base
 }
 
 # Hitstop
@@ -97,6 +124,54 @@ func add_xp(amount: int) -> void:
 		player_stats.hp = player_stats.max_hp
 		player_stats.attack += 2
 		player_stats.defense += 1
+		# Grant skill point every level
+		var st := get_tree().get_first_node_in_group("skill_tree")
+		if st and st.has_method("add_skill_points"):
+			st.add_skill_points(1)
+
+
+func adjust_emotion(emotion: String, amount: int) -> void:
+	if emotional_state.has(emotion):
+		emotional_state[emotion] = clampi(emotional_state[emotion] + amount, 0, 100)
+
+
+func get_dominant_emotion() -> String:
+	var best_key := "determination"
+	var best_val := 0
+	for key: String in emotional_state:
+		if emotional_state[key] > best_val:
+			best_val = emotional_state[key]
+			best_key = key
+	return best_key
+
+
+func record_dilemma(dilemma_id: String, choice: String) -> void:
+	dilemma_history.append({"id": dilemma_id, "choice": choice, "day": day})
+
+
+func add_morality(category: String, amount: int) -> void:
+	if morality.has(category):
+		morality[category] += amount
+
+
+func apply_background(bg: String) -> void:
+	player_stats.background = bg
+	match bg:
+		"soldier":
+			player_stats.attack += 5
+			player_stats.defense += 3
+			player_stats.max_hp += 20
+			player_stats.hp = player_stats.max_hp
+		"scientist":
+			player_stats.crit_chance += 0.1
+			player_stats.max_stamina += 20.0
+			player_stats.stamina = player_stats.max_stamina
+		"survivalist":
+			player_stats.max_hunger += 30.0
+			player_stats.hunger = player_stats.max_hunger
+			player_stats.max_thirst += 30.0
+			player_stats.thirst = player_stats.max_thirst
+			player_stats.speed += 15.0
 
 
 func pause_game() -> void:
