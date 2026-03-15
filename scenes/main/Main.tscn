@@ -25,6 +25,8 @@
 [ext_resource type="Script" path="res://scripts/systems/weather.gd" id="23_weather"]
 [ext_resource type="Script" path="res://scripts/systems/skill_tree.gd" id="24_skilltree"]
 [ext_resource type="Script" path="res://scripts/systems/emotional_state.gd" id="26_emotions"]
+[ext_resource type="Script" path="res://scripts/systems/dilemma_system.gd" id="27_dilemma"]
+[ext_resource type="Script" path="res://scripts/ui/dilemma_ui.gd" id="28_dilemma_ui"]
 [ext_resource type="Script" path="res://scripts/ui/skill_tree_ui.gd" id="25_skilltree_ui"]
 
 [node name="Main" type="Node2D"]
@@ -116,6 +118,14 @@ script = ExtResource("24_skilltree")
 
 [node name="EmotionalState" type="Node" parent="Systems"]
 script = ExtResource("26_emotions")
+
+[node name="DilemmaSystem" type="Node" parent="Systems"]
+script = ExtResource("27_dilemma")
+
+[node name="DilemmaUI" type="CanvasLayer" parent="."]
+layer = 24
+process_mode = 3
+script = ExtResource("28_dilemma_ui")
 
 [node name="SkillTreeUI" type="CanvasLayer" parent="."]
 layer = 20
