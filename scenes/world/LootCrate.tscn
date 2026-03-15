@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://lootcrate001"]
+
+[ext_resource type="Script" path="res://scripts/systems/loot_crate.gd" id="1_crate"]
+
+[node name="LootCrate" type="Area2D"]
+collision_layer = 64
+collision_mask = 1
+script = ExtResource("1_crate")

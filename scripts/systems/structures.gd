@@ -103,6 +103,8 @@ func _create_bunker(pos: Vector2) -> void:
 	get_parent().add_child(terminal)
 
 	_spawn_loot_nearby(pos, 4)
+	_spawn_loot_crate(pos + Vector2(-20, 10))
+	_spawn_loot_crate(pos + Vector2(20, -10))
 
 
 func _create_outpost(pos: Vector2) -> void:
@@ -264,3 +266,10 @@ func _spawn_campfire(pos: Vector2) -> void:
 	var fire: Area2D = CampfireScene.instantiate()
 	fire.global_position = pos
 	get_parent().call_deferred("add_child", fire)
+
+
+func _spawn_loot_crate(pos: Vector2) -> void:
+	var CrateScene := preload("res://scenes/world/LootCrate.tscn")
+	var crate: Area2D = CrateScene.instantiate()
+	crate.global_position = pos
+	get_parent().call_deferred("add_child", crate)
