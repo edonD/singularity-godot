@@ -36,6 +36,7 @@
 [ext_resource type="Script" path="res://scripts/systems/nexus_director.gd" id="34_nexus"]
 [ext_resource type="Script" path="res://scripts/systems/poi_system.gd" id="35_poi"]
 [ext_resource type="Script" path="res://scripts/systems/world_events.gd" id="37_events"]
+[ext_resource type="Script" path="res://scripts/systems/shelter.gd" id="38_shelter"]
 [ext_resource type="Script" path="res://scripts/ui/skill_tree_ui.gd" id="25_skilltree_ui"]
 
 [node name="Main" type="Node2D"]
@@ -165,6 +166,9 @@ script = ExtResource("35_poi")
 
 [node name="WorldEvents" type="Node" parent="Systems"]
 script = ExtResource("37_events")
+
+[node name="Shelter" type="Node" parent="Systems"]
+script = ExtResource("38_shelter")
 
 [node name="WorldMapUI" type="CanvasLayer" parent="."]
 layer = 21
