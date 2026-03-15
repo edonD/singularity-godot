@@ -3,6 +3,7 @@ extends Node2D
 ## Spawns structures in the world: cabins, bunkers, outposts.
 
 const TerminalScene := preload("res://scenes/world/Terminal.tscn")
+const PuzzleScene := preload("res://scenes/world/EnvPuzzle.tscn")
 
 var _spawned: Array[Vector2] = []
 var _check_timer: float = 0.0
@@ -106,6 +107,10 @@ func _create_bunker(pos: Vector2) -> void:
 	_spawn_loot_crate(pos + Vector2(-20, 10))
 	_spawn_loot_crate(pos + Vector2(20, -10))
 
+	# Environmental puzzle in bunker
+	if randf() < 0.6:
+		_spawn_puzzle(pos + Vector2(-25, -15), randi_range(0, 4))
+
 
 func _create_outpost(pos: Vector2) -> void:
 	var root := StaticBody2D.new()
@@ -136,6 +141,10 @@ func _create_outpost(pos: Vector2) -> void:
 	_spawn_loot_nearby(pos, 3)
 	_spawn_hazard(pos + Vector2(-35, 20), 2) # NEXUS field
 	_spawn_hazard(pos + Vector2(35, -20), 2) # NEXUS field
+
+	# NEXUS door hack puzzle in outpost
+	if randf() < 0.7:
+		_spawn_puzzle(pos + Vector2(0, -25), 3) # DOOR_HACK
 
 
 func _draw_cabin(img: Image) -> void:
@@ -275,6 +284,13 @@ func _spawn_loot_crate(pos: Vector2) -> void:
 	var crate: Area2D = CrateScene.instantiate()
 	crate.global_position = pos
 	get_parent().call_deferred("add_child", crate)
+
+
+func _spawn_puzzle(pos: Vector2, puzzle_type: int) -> void:
+	var puzzle: Area2D = PuzzleScene.instantiate()
+	puzzle.global_position = pos
+	puzzle.puzzle_type = puzzle_type
+	get_parent().call_deferred("add_child", puzzle)
 
 
 func _spawn_hazard(pos: Vector2, type: int) -> void:
