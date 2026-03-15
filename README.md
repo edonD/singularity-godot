@@ -30,6 +30,17 @@ A 16-bit pixel art survival game built in Godot 4.4 with GDScript. Fight against
 | Procedural Audio (12 retro SFX types) | Done |
 | Screen Effects (damage/heal/levelup flash) | Done |
 | Footstep sounds | Done |
+| Status Effects (poison, slow, stun) | Done |
+| Combo Counter (3x→10x tracking) | Done |
+| Campfires (rest points, HP regen) | Done |
+| Loot Crates (breakable containers) | Done |
+| NPC Survivors (dialogue, rewards) | Done |
+| Attack Trails (melee arc visual) | Done |
+| Squash/Stretch animations | Done |
+| Tutorial Hints (contextual) | Done |
+| Enemy Health Bars | Done |
+| Ambient Audio (wind, crickets, combat pulse) | Done |
+| Auto-save on day change | Done |
 
 ## How to Play
 
