@@ -53,6 +53,22 @@ func _build_ui() -> void:
 	resume_btn.pressed.connect(func() -> void: GameManager.resume_game())
 	vbox.add_child(resume_btn)
 
+	var save_btn := Button.new()
+	save_btn.text = "Save Game"
+	save_btn.add_theme_font_size_override("font_size", 10)
+	save_btn.pressed.connect(func() -> void: SaveManager.save_game())
+	vbox.add_child(save_btn)
+
+	var main_menu_btn := Button.new()
+	main_menu_btn.text = "Main Menu"
+	main_menu_btn.add_theme_font_size_override("font_size", 10)
+	main_menu_btn.pressed.connect(func() -> void:
+		GameManager.state = GameManager.GameState.MENU
+		get_tree().paused = false
+		get_tree().change_scene_to_file("res://scenes/ui/TitleScreen.tscn")
+	)
+	vbox.add_child(main_menu_btn)
+
 	var quit_btn := Button.new()
 	quit_btn.text = "Quit"
 	quit_btn.add_theme_font_size_override("font_size", 10)

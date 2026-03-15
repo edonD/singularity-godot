@@ -8,7 +8,7 @@ config_version=5
 
 config/name="Singularity Survivor"
 config/description="Year 2029. Survive against NEXUS, a superintelligence that consumed civilization."
-run/main_scene="res://scenes/main/Main.tscn"
+run/main_scene="res://scenes/ui/TitleScreen.tscn"
 config/features=PackedStringArray("4.4")
 
 [autoload]
@@ -16,6 +16,7 @@ config/features=PackedStringArray("4.4")
 GameManager="*res://scripts/autoload/game_manager.gd"
 AudioManager="*res://scripts/autoload/audio_manager.gd"
 CameraManager="*res://scripts/autoload/camera_manager.gd"
+SaveManager="*res://scripts/autoload/save_manager.gd"
 
 [display]
 
