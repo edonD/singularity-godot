@@ -181,6 +181,13 @@ func _start_attack() -> void:
 	attack_shape.disabled = false
 	AudioManager.play_sfx("swing")
 
+	# Spawn attack trail
+	var AttackTrail := preload("res://scripts/effects/attack_trail.gd")
+	var trail := Node2D.new()
+	trail.set_script(AttackTrail)
+	get_parent().add_child(trail)
+	trail.setup(global_position, facing)
+
 	# Deal damage to enemies in area after a tiny delay
 	await get_tree().create_timer(0.05).timeout
 	if not is_inside_tree():

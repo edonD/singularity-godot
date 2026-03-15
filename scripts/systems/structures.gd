@@ -69,8 +69,10 @@ func _create_cabin(pos: Vector2) -> void:
 
 	get_parent().add_child(root)
 
-	# Spawn items nearby
+	# Spawn items and NPC nearby
 	_spawn_loot_nearby(pos, 2)
+	if randf() < 0.5:
+		_spawn_npc(pos + Vector2(30, 0))
 
 
 func _create_bunker(pos: Vector2) -> void:
@@ -245,3 +247,12 @@ func _spawn_loot_nearby(pos: Vector2, count: int) -> void:
 		drop.global_position = pos + offset
 		drop.call_deferred("setup", entry[0], randi_range(1, 3), entry[1])
 		get_parent().call_deferred("add_child", drop)
+
+
+func _spawn_npc(pos: Vector2) -> void:
+	var NPCScene := preload("res://scenes/world/NPC.tscn")
+	var npc: Area2D = NPCScene.instantiate()
+	npc.global_position = pos
+	var names: Array[String] = ["Marcus", "Elena", "Jin", "Sarah", "Dmitri", "Aisha"]
+	npc.npc_name = names[randi() % names.size()]
+	get_parent().call_deferred("add_child", npc)
