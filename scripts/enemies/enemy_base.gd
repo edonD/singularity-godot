@@ -129,31 +129,41 @@ func _update_detection(delta: float) -> void:
 
 	var dist := global_position.distance_to(_target.global_position)
 
+	# Skill tree: stealth skills reduce effective detection range
+	var effective_range := detection_range
+	var st := get_tree().get_first_node_in_group("skill_tree")
+	if st and st.has_method("get_effect_sum"):
+		var reduction := st.get_effect_sum("detection_reduction")
+		effective_range *= (1.0 - reduction)
+	# Player cloaking/invincibility = can't detect
+	if _target.get("invincible") == true and dist > effective_range * 0.3:
+		return
+
 	match detection_state:
 		DetectionState.UNAWARE:
-			if dist < detection_range * 0.6:
+			if dist < effective_range * 0.6:
 				detection_state = DetectionState.ALERT
 				AudioManager.play_sfx("alert")
-			elif dist < detection_range:
+			elif dist < effective_range:
 				_suspicion += delta
 				if _suspicion > 1.5:
 					detection_state = DetectionState.SUSPICIOUS
 		DetectionState.SUSPICIOUS:
-			if dist < detection_range * 0.7:
+			if dist < effective_range * 0.7:
 				detection_state = DetectionState.ALERT
 				AudioManager.play_sfx("alert")
-			elif dist > detection_range * 1.5:
+			elif dist > effective_range * 1.5:
 				_suspicion -= delta
 				if _suspicion <= 0:
 					detection_state = DetectionState.UNAWARE
 		DetectionState.ALERT:
-			if dist < detection_range * 1.2:
+			if dist < effective_range * 1.2:
 				detection_state = DetectionState.HUNTING
-			elif dist > detection_range * 2.0:
+			elif dist > effective_range * 2.0:
 				detection_state = DetectionState.SUSPICIOUS
 				_suspicion = 1.0
 		DetectionState.HUNTING:
-			if dist > detection_range * 2.5:
+			if dist > effective_range * 2.5:
 				detection_state = DetectionState.ALERT
 
 
@@ -209,6 +219,10 @@ func _spawn_damage_number(amount: int, is_crit: bool) -> void:
 	tween.tween_callback(label.queue_free)
 
 
+func get_hp_percent() -> float:
+	return float(hp) / max_hp if max_hp > 0 else 0.0
+
+
 func _die() -> void:
 	_is_dead = true
 	GameManager.kills += 1
@@ -221,6 +235,17 @@ func _die() -> void:
 	var mm := get_tree().get_first_node_in_group("mission_manager")
 	if mm and mm.has_method("report_kill"):
 		mm.report_kill(name)
+
+	# Bloodlust: heal on kill
+	var st := get_tree().get_first_node_in_group("skill_tree")
+	if st and st.has_method("has_skill") and st.has_skill("combat_bloodlust"):
+		var s := GameManager.player_stats
+		s.hp = mini(s.hp + 10, s.max_hp)
+
+	# Emotional state: enemy killed
+	var emo := get_tree().get_first_node_in_group("emotional_state")
+	if emo and emo.has_method("on_enemy_killed"):
+		emo.on_enemy_killed()
 
 	# Death animation
 	var tween := create_tween()

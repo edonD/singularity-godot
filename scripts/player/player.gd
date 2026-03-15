@@ -200,17 +200,45 @@ func _deal_attack_damage() -> void:
 	var s := GameManager.player_stats
 	var bodies := attack_area.get_overlapping_bodies()
 	var hit_something := false
-	var combo_mult := 1.0 + (attack_combo - 1) * 0.4 # 1.0, 1.4, 1.8 — 3rd hit is BIG
-	var is_crit: bool = randf() < s.crit_chance
+	var combo_mult := 1.0 + (attack_combo - 1) * 0.4
+
+	# Skill tree checks
+	var st := get_tree().get_first_node_in_group("skill_tree")
+	var melee_mult := 1.0
+	var crit_bonus := 0.0
+	if st:
+		melee_mult = st.get_effect_value("melee_dmg_mult", 1.0)
+		# Berserker: below 30% HP = +50% damage
+		if st.has_skill("combat_berserker") and s.hp < s.max_hp * 0.3:
+			melee_mult *= 1.5
+		# Emotional modifiers
+		var emo_sys := get_tree().get_first_node_in_group("emotional_state")
+		if emo_sys and emo_sys.has_method("get_emotion_modifier"):
+			melee_mult *= emo_sys.get_emotion_modifier("attack")
+		# Survival injury modifier
+		var survival := get_tree().get_first_node_in_group("survival")
+		if survival and survival.has_method("get_attack_modifier"):
+			melee_mult *= survival.get_attack_modifier()
+
+	var is_crit: bool = randf() < (s.crit_chance + crit_bonus)
 
 	for body in bodies:
 		if body.is_in_group("enemies") and body.has_method("take_damage"):
-			var dmg := int(s.attack * combo_mult)
+			var dmg := int(s.attack * combo_mult * melee_mult)
 			if is_crit:
 				dmg = int(dmg * 2.0)
+			# Execute: instant kill below 10% HP
+			if st and st.has_skill("combat_execute") and body.has_method("get_hp_percent"):
+				if body.get_hp_percent() < 0.1:
+					dmg = 9999
 			var knockback_dir := (body.global_position - global_position).normalized()
 			body.take_damage(dmg, knockback_dir, is_crit)
 			hit_something = true
+			# Bloodlust: heal on kill check handled by enemy death
+			# Track combat action for NEXUS director
+			var director := get_tree().get_first_node_in_group("nexus_director")
+			if director and director.has_method("track_action"):
+				director.track_action("combat")
 
 	if hit_something:
 		var is_finisher := attack_combo == 3
