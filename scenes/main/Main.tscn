@@ -33,6 +33,7 @@
 [ext_resource type="Script" path="res://scripts/ui/journal_ui.gd" id="32_journal_ui"]
 [ext_resource type="Script" path="res://scripts/ui/character_sheet.gd" id="33_charsheet"]
 [ext_resource type="Script" path="res://scripts/systems/nexus_director.gd" id="34_nexus"]
+[ext_resource type="Script" path="res://scripts/systems/poi_system.gd" id="35_poi"]
 [ext_resource type="Script" path="res://scripts/ui/skill_tree_ui.gd" id="25_skilltree_ui"]
 
 [node name="Main" type="Node2D"]
@@ -156,6 +157,9 @@ script = ExtResource("33_charsheet")
 
 [node name="NEXUSDirector" type="Node" parent="Systems"]
 script = ExtResource("34_nexus")
+
+[node name="POISystem" type="Node" parent="Systems"]
+script = ExtResource("35_poi")
 
 [node name="SkillTreeUI" type="CanvasLayer" parent="."]
 layer = 20
