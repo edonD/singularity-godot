@@ -86,6 +86,7 @@ func _physics_process(delta: float) -> void:
 
 	move_and_slide()
 	_update_sprite()
+	_update_camera_lookahead()
 
 
 func _update_timers(delta: float) -> void:
@@ -202,6 +203,12 @@ func _deal_attack_damage() -> void:
 		AudioManager.play_sfx("critical" if is_crit else "hit")
 		CameraManager.shake(5.0 + attack_combo * 2.0 if not is_crit else 10.0)
 		GameManager.request_hitstop(0.04 + attack_combo * 0.01)
+		# Spawn hit effect
+		var HitEffect := preload("res://scripts/effects/hit_effect.gd")
+		var effect := Node2D.new()
+		effect.set_script(HitEffect)
+		effect.setup(global_position + facing * 16.0, 6.0 if not is_crit else 12.0)
+		get_parent().add_child(effect)
 
 
 func _handle_attack_state(delta: float) -> void:
@@ -227,6 +234,13 @@ func _start_dodge() -> void:
 	invincible_timer = DODGE_DURATION
 	velocity = facing * DODGE_SPEED
 	AudioManager.play_sfx("dodge")
+
+	# Spawn dust particles
+	var DustParticles := preload("res://scripts/effects/dust_particles.gd")
+	var dust := Node2D.new()
+	dust.set_script(DustParticles)
+	get_parent().add_child(dust)
+	dust.emit_burst(global_position, 6, Color(0.5, 0.45, 0.35, 0.7), 40.0)
 
 
 func _shoot_ranged() -> void:
@@ -337,3 +351,10 @@ func _update_sprite() -> void:
 			sprite.modulate = Color(1.5, 0.5, 0.5)
 		_:
 			sprite.modulate = Color.WHITE
+
+
+func _update_camera_lookahead() -> void:
+	var camera := get_node_or_null("Camera2D") as Camera2D
+	if camera:
+		var target_offset := facing * 20.0 if velocity.length() > 10.0 else Vector2.ZERO
+		camera.offset = camera.offset.lerp(target_offset, 0.05)
