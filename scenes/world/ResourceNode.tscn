@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://resource001"]
+
+[ext_resource type="Script" path="res://scripts/systems/resource_node.gd" id="1_resource"]
+
+[node name="ResourceNode" type="Area2D"]
+collision_layer = 64
+collision_mask = 1
+script = ExtResource("1_resource")

@@ -285,6 +285,10 @@ func _generate_chunk(chunk: Vector2i) -> void:
 					var dec := Vector2i(randi_range(0, 5), 3)
 					object_layer.set_cell(Vector2i(tx, ty), 0, dec)
 
+			# Resource nodes (rare)
+			if not in_spawn_zone and randf() < 0.001 and height > -0.1 and height < 0.3:
+				_spawn_resource_node(world_pos, biome)
+
 
 func _create_layers() -> void:
 	ground_layer = TileMapLayer.new()
@@ -304,3 +308,22 @@ func _create_layers() -> void:
 func _process(_delta: float) -> void:
 	if GameManager.player:
 		generate_around(GameManager.player.global_position)
+
+
+func _spawn_resource_node(world_pos: Vector2, biome: Biome) -> void:
+	var ResourceScene := preload("res://scenes/world/ResourceNode.tscn")
+	var node: Area2D = ResourceScene.instantiate()
+	node.global_position = world_pos
+
+	# Resource type based on biome
+	match biome:
+		Biome.FOREST:
+			node.resource_type = 0 # Berry bush
+		Biome.RUINS, Biome.MOUNTAIN:
+			node.resource_type = 1 # Scrap pile
+		Biome.SNOW:
+			node.resource_type = 2 # Crystal
+		_:
+			node.resource_type = randi() % 3
+
+	get_parent().call_deferred("add_child", node)

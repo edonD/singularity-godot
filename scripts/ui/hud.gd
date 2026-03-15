@@ -184,6 +184,16 @@ func _connect_signals() -> void:
 func _process(_delta: float) -> void:
 	kills_label.text = "Kills: " + str(GameManager.kills)
 
+	# Update day label with time indicator
+	var time_str := "Dawn" if GameManager.time_of_day < 0.1 else "Day" if GameManager.time_of_day < 0.35 else "Dusk" if GameManager.time_of_day < 0.45 else "Night" if GameManager.time_of_day < 0.85 else "Pre-Dawn"
+	day_label.text = "Day %d | %s" % [GameManager.day, time_str]
+
+	# Difficulty color on day label
+	if GameManager.day >= 7:
+		day_label.add_theme_color_override("font_color", Color(0.9, 0.3, 0.3))
+	elif GameManager.day >= 4:
+		day_label.add_theme_color_override("font_color", Color(0.9, 0.7, 0.3))
+
 	# Low HP vignette pulse
 	var s := GameManager.player_stats
 	if s.hp < s.max_hp * 0.3:
