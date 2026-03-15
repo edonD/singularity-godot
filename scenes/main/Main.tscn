@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://main001"]
+[gd_scene load_steps=20 format=3 uid="uid://main001"]
 
 [ext_resource type="Script" path="res://scripts/main/main.gd" id="1_main"]
 [ext_resource type="PackedScene" uid="uid://player001" path="res://scenes/player/Player.tscn" id="2_player"]
@@ -17,6 +17,7 @@
 [ext_resource type="Script" path="res://scripts/player/abilities.gd" id="15_abilities"]
 [ext_resource type="Script" path="res://scripts/ui/death_screen.gd" id="16_death"]
 [ext_resource type="Script" path="res://scripts/ui/level_up_ui.gd" id="17_levelup"]
+[ext_resource type="Script" path="res://scripts/systems/structures.gd" id="18_structures"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_main")
@@ -34,6 +35,9 @@ script = ExtResource("4_spawner")
 
 [node name="TerminalSpawner" type="Node2D" parent="Entities"]
 script = ExtResource("13_terminals")
+
+[node name="Structures" type="Node2D" parent="Entities"]
+script = ExtResource("18_structures")
 
 [node name="Systems" type="Node" parent="."]
 

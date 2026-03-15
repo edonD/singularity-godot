@@ -98,6 +98,33 @@ func _build_ui() -> void:
 	kills_label.add_theme_color_override("font_color", Color(0.8, 0.4, 0.4))
 	bottom_hbox.add_child(kills_label)
 
+	# Ability cooldown display
+	var ability_hbox := HBoxContainer.new()
+	ability_hbox.add_theme_constant_override("separation", 6)
+	bottom_hbox.add_child(ability_hbox)
+
+	var ability_names: Array[String] = ["[1]EMP", "[2]Cloak", "[3]Shield"]
+	for i in 3:
+		var ab_label := Label.new()
+		ab_label.name = "Ability" + str(i)
+		ab_label.text = ability_names[i]
+		ab_label.add_theme_font_size_override("font_size", 7)
+		ab_label.add_theme_color_override("font_color", Color(0.4, 0.4, 0.5))
+		ability_hbox.add_child(ab_label)
+
+	# Minimap
+	var minimap_container := PanelContainer.new()
+	minimap_container.set_anchors_preset(Control.PRESET_TOP_RIGHT)
+	minimap_container.custom_minimum_size = Vector2(60, 60)
+	minimap_container.position = Vector2(-68, 4)
+	var mm_style := StyleBoxFlat.new()
+	mm_style.bg_color = Color(0.05, 0.05, 0.08, 0.8)
+	mm_style.border_color = Color(0.2, 0.3, 0.4)
+	mm_style.set_border_width_all(1)
+	mm_style.set_corner_radius_all(2)
+	minimap_container.add_theme_stylebox_override("panel", mm_style)
+	add_child(minimap_container)
+
 	# Low HP vignette overlay
 	_vignette = ColorRect.new()
 	_vignette.set_anchors_preset(Control.PRESET_FULL_RECT)
