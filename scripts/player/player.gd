@@ -359,16 +359,25 @@ func _update_sprite() -> void:
 	if facing.x != 0:
 		sprite.flip_h = facing.x < 0
 
-	# Color modulation based on state for visual feedback
+	# Squash/stretch based on state
+	var target_scale := Vector2(1.0, 1.0)
 	match state:
 		State.ATTACK, State.ATTACK2, State.ATTACK3:
 			sprite.modulate = Color(1.2, 1.2, 1.0)
+			target_scale = Vector2(1.2, 0.85) # Wide attack
 		State.DODGE:
 			sprite.modulate = Color(0.7, 0.7, 1.0, 0.6)
+			target_scale = Vector2(0.7, 1.3) # Stretched dodge
 		State.HURT:
 			sprite.modulate = Color(1.5, 0.5, 0.5)
+			target_scale = Vector2(1.3, 0.7) # Squashed hurt
+		State.SPRINT:
+			sprite.modulate = Color.WHITE
+			target_scale = Vector2(0.9, 1.1) # Slight stretch
 		_:
 			sprite.modulate = Color.WHITE
+
+	sprite.scale = sprite.scale.lerp(target_scale, 0.2)
 
 
 func _update_camera_lookahead() -> void:
