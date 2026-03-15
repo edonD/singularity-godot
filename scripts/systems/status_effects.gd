@@ -9,6 +9,10 @@ signal effect_removed(target: Node2D, effect_name: String)
 var _active_effects: Dictionary = {}
 
 
+func _ready() -> void:
+	add_to_group("status_effects")
+
+
 func apply_effect(target: Node2D, effect_name: String, duration: float) -> void:
 	var nid := target.get_instance_id()
 	if not _active_effects.has(nid):

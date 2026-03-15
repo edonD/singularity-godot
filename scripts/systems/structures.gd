@@ -134,6 +134,8 @@ func _create_outpost(pos: Vector2) -> void:
 	get_parent().add_child(terminal)
 
 	_spawn_loot_nearby(pos, 3)
+	_spawn_hazard(pos + Vector2(-35, 20), 2) # NEXUS field
+	_spawn_hazard(pos + Vector2(35, -20), 2) # NEXUS field
 
 
 func _draw_cabin(img: Image) -> void:
@@ -273,3 +275,11 @@ func _spawn_loot_crate(pos: Vector2) -> void:
 	var crate: Area2D = CrateScene.instantiate()
 	crate.global_position = pos
 	get_parent().call_deferred("add_child", crate)
+
+
+func _spawn_hazard(pos: Vector2, type: int) -> void:
+	var HazardScene := preload("res://scenes/world/EnvHazard.tscn")
+	var hazard: Area2D = HazardScene.instantiate()
+	hazard.global_position = pos
+	hazard.hazard_type = type
+	get_parent().call_deferred("add_child", hazard)
