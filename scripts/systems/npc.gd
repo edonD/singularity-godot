@@ -116,8 +116,21 @@ func _on_body_exited(body: Node2D) -> void:
 		_label.visible = false
 
 
+var dialogue_id: String = "" # If set, use branching dialogue system
+
+
 func _interact() -> void:
 	AudioManager.play_sfx("click")
+
+	# Try branching dialogue system first
+	if not dialogue_id.is_empty():
+		var ds := get_tree().get_first_node_in_group("dialogue_system")
+		if ds and ds.has_method("start_dialogue"):
+			ds.start_dialogue(dialogue_id)
+			if not _rescued:
+				_rescued = true
+				GameManager.add_xp(20)
+			return
 
 	if not _rescued:
 		_rescued = true
@@ -130,6 +143,11 @@ func _interact() -> void:
 			AudioManager.play_sfx("pickup")
 
 		GameManager.add_xp(20)
+
+		# Emotional: helped NPC
+		var emo := get_tree().get_first_node_in_group("emotional_state")
+		if emo and emo.has_method("on_npc_helped"):
+			emo.on_npc_helped()
 
 	_show_dialogue()
 

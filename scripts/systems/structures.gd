@@ -263,12 +263,31 @@ func _spawn_loot_nearby(pos: Vector2, count: int) -> void:
 		get_parent().call_deferred("add_child", drop)
 
 
+var _npc_dialogue_ids: Array[String] = ["survivor_anna", "trader_eli", "wounded_soldier"]
+var _next_dialogue_idx: int = 0
+
 func _spawn_npc(pos: Vector2) -> void:
 	var NPCScene := preload("res://scenes/world/NPC.tscn")
 	var npc: Area2D = NPCScene.instantiate()
 	npc.global_position = pos
-	var names: Array[String] = ["Marcus", "Elena", "Jin", "Sarah", "Dmitri", "Aisha"]
-	npc.npc_name = names[randi() % names.size()]
+
+	# Assign branching dialogue to some NPCs
+	if _next_dialogue_idx < _npc_dialogue_ids.size() and randf() < 0.6:
+		var did: String = _npc_dialogue_ids[_next_dialogue_idx]
+		npc.dialogue_id = did
+		# Name based on dialogue
+		match did:
+			"survivor_anna":
+				npc.npc_name = "Anna"
+			"trader_eli":
+				npc.npc_name = "Eli"
+			"wounded_soldier":
+				npc.npc_name = "Sgt. Park"
+		_next_dialogue_idx += 1
+	else:
+		var names: Array[String] = ["Marcus", "Elena", "Jin", "Sarah", "Dmitri", "Aisha"]
+		npc.npc_name = names[randi() % names.size()]
+
 	get_parent().call_deferred("add_child", npc)
 
 
