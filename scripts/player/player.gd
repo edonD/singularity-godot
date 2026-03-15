@@ -23,6 +23,7 @@ var invincible: bool = false
 var invincible_timer: float = 0.0
 var _input_buffer_attack: bool = false
 var _input_buffer_dodge: bool = false
+var _step_timer: float = 0.0
 
 # Movement tuning — the secret sauce for game feel
 const ACCELERATION := 1800.0
@@ -134,6 +135,16 @@ func _handle_movement(delta: float) -> void:
 	else:
 		velocity = velocity.move_toward(Vector2.ZERO, FRICTION * delta)
 		state = State.IDLE
+
+	# Footstep sounds
+	if velocity.length() > 20.0:
+		var step_interval := 0.25 if state == State.SPRINT else 0.4
+		_step_timer += delta
+		if _step_timer >= step_interval:
+			_step_timer = 0.0
+			AudioManager.play_sfx("step", 0.3)
+	else:
+		_step_timer = 0.0
 
 
 func _handle_combat_input() -> void:
