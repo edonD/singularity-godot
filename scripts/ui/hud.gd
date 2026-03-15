@@ -14,6 +14,9 @@ var _low_hp_flash: float = 0.0
 var _vignette: ColorRect
 var emotion_label: Label
 var background_label: Label
+var temp_bar: ProgressBar
+var sleep_bar: ProgressBar
+var injury_label: Label
 
 
 func _ready() -> void:
@@ -72,6 +75,18 @@ func _build_ui() -> void:
 
 	thirst_bar = _create_bar("TH", Color(0.2, 0.5, 0.85), 100)
 	right_vbox.add_child(thirst_bar)
+
+	temp_bar = _create_bar("TMP", Color(0.8, 0.5, 0.2), 100)
+	right_vbox.add_child(temp_bar)
+
+	sleep_bar = _create_bar("SLP", Color(0.5, 0.4, 0.7), 100)
+	right_vbox.add_child(sleep_bar)
+
+	injury_label = Label.new()
+	injury_label.text = ""
+	injury_label.add_theme_font_size_override("font_size", 6)
+	injury_label.add_theme_color_override("font_color", Color(0.9, 0.3, 0.3))
+	right_vbox.add_child(injury_label)
 
 	# Bottom info
 	var bottom_spacer := Control.new()
@@ -222,6 +237,29 @@ func _process(_delta: float) -> void:
 
 	var bg_name: String = GameManager.player_stats.get("background", "soldier")
 	background_label.text = "[%s]" % bg_name.capitalize()
+
+	# Update survival bars
+	var survival := get_tree().get_first_node_in_group("survival")
+	if survival:
+		temp_bar.value = survival.body_temp
+		# Color temp bar based on danger
+		if survival.body_temp < 20.0:
+			temp_bar.get_theme_stylebox("fill").bg_color = Color(0.3, 0.5, 0.9) # Cold blue
+		elif survival.body_temp > 80.0:
+			temp_bar.get_theme_stylebox("fill").bg_color = Color(0.9, 0.3, 0.2) # Hot red
+		else:
+			temp_bar.get_theme_stylebox("fill").bg_color = Color(0.8, 0.5, 0.2) # Normal
+
+		sleep_bar.value = survival.sleep_level
+
+		# Injury display
+		if survival.injuries.size() > 0:
+			var inj_names: Array[String] = []
+			for inj in survival.injuries:
+				inj_names.append(inj.type.replace("_", " "))
+			injury_label.text = "! " + ", ".join(inj_names)
+		else:
+			injury_label.text = ""
 
 	# Low HP vignette pulse
 	var s := GameManager.player_stats
