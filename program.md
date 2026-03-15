@@ -202,3 +202,105 @@ LOOP FOREVER:
 **NEVER STOP.** If the game is "done," make it better. Add more enemy types, more items, better animations, tighter controls, more story. A game can always be more polished. The human is away.
 
 **The bar**: Someone plays this and says "this feels like a real indie game, not a jam project." Tight controls, satisfying combat, interesting choices, and a story that makes them want to keep playing.
+
+## URGENT: Testing & Quality Assurance (NON-NEGOTIABLE)
+
+You MUST test everything you build. A game that parses but does not play is worthless.
+
+### Automated Testing Framework
+
+Create `tests/test_runner.gd` as an autoload test suite that runs with `godot --headless --script tests/test_runner.gd`. After EVERY major system, add tests:
+
+**Player Tests:**
+- Instantiate Player, call move_right, assert position changed
+- Set HP to 0, assert death state triggered
+- Sprint with 0 stamina, assert sprint fails
+- Dodge roll, assert i-frames active during roll
+
+**Combat Tests:**
+- Spawn player + enemy, player attacks, assert enemy HP decreased
+- Spawn enemy, assert it detects player within detection range
+- Kill enemy, assert XP gained, assert loot dropped
+- Player takes damage, assert screen shake triggered
+- Test knockback: enemy position should change on hit
+
+**Inventory Tests:**
+- Add item, assert inventory count increased
+- Add item beyond weight limit, assert rejected
+- Craft recipe with correct components, assert output item created
+- Craft with missing components, assert failed
+
+**World Tests:**
+- Generate map, assert all biome types present
+- Assert player spawn position is valid (not inside wall)
+- Assert structures placed on valid tiles
+- Day/night cycle: advance time, assert lighting changed
+
+**Save/Load Tests:**
+- Set player position + inventory + stats, save, load, assert all match
+- Save with mission progress, load, assert missions preserved
+
+**Integration Tests:**
+- Full gameplay loop: spawn > move > find item > pick up > open inventory > equip > find enemy > attack > kill > gain XP > level up
+- Assert each step succeeds
+
+### Run Tests After Every Change
+```bash
+godot --headless --check-only && godot --headless --script tests/test_runner.gd
+```
+
+If ANY test fails, fix it before committing. Log test results in `test_results.md`.
+
+### Export & Browser Testing
+
+After core systems are built:
+1. Install Godot export templates if not present
+2. Export to HTML5: `godot --headless --export-release "HTML5" build/index.html`
+3. Serve: `cd build && python3 -m http.server 8080 &`
+4. Use Puppeteer/headless Chrome to:
+   - Load the game page
+   - Screenshot the title screen
+   - Send keyboard inputs (arrow keys, attack)
+   - Screenshot gameplay
+   - Verify the game renders (check screenshot is not blank/error)
+5. Save screenshots to `screenshots/`
+6. Look at screenshots — does this look like a real game?
+
+Install Puppeteer if needed: `sudo npm install -g puppeteer`
+
+### Game Design Quality Checks
+
+Every 10 minutes, stop and ask yourself:
+
+1. **Is movement fun?** — Does the player accelerate/decelerate smoothly? Is the speed right? Does sprinting feel faster? Does the dodge roll feel satisfying?
+2. **Is combat engaging?** — Do enemies require different strategies? Does hitting feel impactful? Is there risk/reward in combat? Can you die if you play badly?
+3. **Are systems interconnected?** — Does hunger affect combat performance? Does crafting feel rewarding? Does the tech tree create meaningful progression?
+4. **Is there tension?** — Do you feel pressure from the survival mechanics? Is nighttime scary? Are NEXUS encounters threatening?
+5. **Would YOU play this?** — Be brutally honest. If any answer is no, redesign that system.
+
+If a system does not feel right after 3 iterations, DELETE IT and rebuild from scratch with a completely different approach. Do not polish a turd.
+
+### Spawn Critic Agent
+
+Every 10 minutes, spawn a fresh Claude with your test results and screenshots:
+
+"You are a game design critic. Look at these test results and screenshots.
+1. Based on the test coverage, are the game systems robust?
+2. Looking at the screenshots, does this look like a professional indie game?
+3. What is the biggest gameplay risk you see?
+4. Rate the game architecture 1-10
+5. What would you cut or redesign?
+Be ruthless."
+
+Log critic feedback in `critic_feedback.md`.
+
+### The Quality Bar
+
+Before considering ANY system "done":
+- All automated tests pass
+- godot --check-only passes with zero errors
+- The system has been tested in combination with other systems (not just isolation)
+- You would personally enjoy playing this system
+- A critic agent has reviewed and scored it 8+/10
+
+**A game nobody can play is worse than no game at all. TEST EVERYTHING.**
