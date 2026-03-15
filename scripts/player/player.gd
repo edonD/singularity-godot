@@ -139,6 +139,8 @@ func _handle_combat_input() -> void:
 	if Input.is_action_just_pressed("attack") or _input_buffer_attack:
 		_input_buffer_attack = false
 		_start_attack()
+	elif Input.is_action_just_pressed("ranged_attack"):
+		_shoot_ranged()
 	elif Input.is_action_just_pressed("dodge") or _input_buffer_dodge:
 		_input_buffer_dodge = false
 		_start_dodge()
@@ -225,6 +227,33 @@ func _start_dodge() -> void:
 	invincible_timer = DODGE_DURATION
 	velocity = facing * DODGE_SPEED
 	AudioManager.play_sfx("dodge")
+
+
+func _shoot_ranged() -> void:
+	# Check for arrows in inventory
+	var inv := get_tree().get_first_node_in_group("inventory")
+	if inv and inv.has_method("has_item") and not inv.has_item("arrow"):
+		return
+
+	# Get aim direction toward mouse
+	var aim_dir := (get_global_mouse_position() - global_position).normalized()
+	facing = aim_dir
+
+	# Consume arrow
+	if inv and inv.has_method("remove_item"):
+		inv.remove_item("arrow", 1)
+
+	# Spawn projectile
+	var ProjectileScene := preload("res://scenes/effects/Projectile.tscn")
+	var proj: Area2D = ProjectileScene.instantiate()
+	proj.global_position = global_position + aim_dir * 12.0
+	proj.direction = aim_dir
+	proj.damage = GameManager.player_stats.attack
+	proj.is_crit = randf() < GameManager.player_stats.crit_chance
+	if proj.is_crit:
+		proj.damage *= 2
+	get_parent().add_child(proj)
+	AudioManager.play_sfx("shoot")
 
 
 func _handle_dodge_state(delta: float) -> void:
