@@ -1,10 +1,54 @@
-# Singularity Survivor — Godot 4.4
+# Singularity Survivor V2 — Godot 4.4
 
-A 16-bit pixel art survival game built in Godot 4.4 with GDScript. Fight against NEXUS, a superintelligence that consumed civilization. Explore, craft, survive, and discover the truth.
+A 16-bit pixel art survival game built in Godot 4.4 with GDScript. Fight against NEXUS, a superintelligence that consumed civilization. Explore, craft, survive, make impossible choices, and discover the truth.
+
+## V2 — What's New
+
+V2 transforms Singularity Survivor from a solid action game into a deep, systems-driven survival RPG with moral weight. Every system interconnects. Your choices matter.
+
+### Character Depth
+- **Skill Tree**: 3 branches (Combat, Stealth, Tech) with 9 skills each (27 total). Skills genuinely change gameplay — Berserker Rage, Camouflage, Turret Deployment, NEXUS Mimicry, and more
+- **Character Backgrounds**: Choose Soldier, Scientist, or Survivalist at game start. Each has different stats and unlocks different dialogue options
+- **Emotional State**: Fear, determination, despair, hope — affected by events, influences combat modifiers, dialogue options, and some abilities
+- **Morality Tracking**: Not good/evil — pragmatic, compassionate, or ruthless. Your choices are tracked and affect NPC reactions
+
+### Life Dilemmas
+- 6 moral dilemmas that appear organically: dying survivor begging for your medkit, NEXUS data terminal (intel vs. being tracked), child hiding alone, captured experiment subject, shelter discovered by NEXUS, outpost raid invitation
+- Choices affect: inventory, emotions, morality, NEXUS awareness, available missions, and endings
+- Dramatic UI presentation with branching consequences
+
+### Survival Systems
+- **Temperature**: Cold at night/mountains, need fire/clothing. Freezing causes damage and frostbite
+- **Injuries**: Bleeding, broken limbs, infections, burns, frostbite — each with severity levels and timed duration
+- **Sleep Deprivation**: Performance degrades, hallucinations at extreme levels, collapse at zero
+- **Food Spoilage**: Cooked meat decays over time — manage inventory timing
+
+### Dialogue & Story
+- Branching dialogue system with NPC portraits and typewriter text effect
+- 3 full dialogue trees with emotion-gated, morality-gated, and skill-gated choices
+- Choices unlock missions, give items, and affect emotional state
+- Quest journal with 10 quests (6 main, 4 side), tracked objectives, and lore collection
+
+### World
+- **Points of Interest**: 8 POI types spawning dynamically — crashed helicopters, bridges, tunnels, radio towers, NEXUS wreckage, frozen ponds
+- **Environmental Puzzles**: 5 types — power redirect, water drain, radio repair, door hack, generator fix. Multi-step solving with material costs
+- **World Map**: Fog of war exploration, player marker, POI markers, biome colors. Press M to view
+
+### NEXUS Adaptive Difficulty
+- NEXUS tracks your playstyle: stealth → thermal sensors, combat → sentinels, hoarding → harvesters
+- 10-tier escalation: Scout Phase → SINGULARITY PROTOCOL
+- Dynamic events: supply drops, patrol sweeps, survivor distress calls, EMP storms
+- Enemies scale with threat level (HP, damage, detection range)
+
+### UI Improvements
+- **Character Sheet** (C): Full stats, emotions, morality, injuries, survival status, NEXUS awareness, dilemma history
+- **Skill Tree** (T): Visual tree with 3 branch tabs, unlock skills with points
+- **Quest Journal** (J): Active/completed quests with objectives, lore tab
+- **World Map** (M): Fog of war, explored terrain, POI markers
 
 ## Current State
 
-**All core systems implemented and verified. Game is playable end-to-end.**
+**V2 complete — 64+ features, 64 script files, ~9,900 lines of code.**
 
 | System | Status |
 |--------|--------|
@@ -17,8 +61,24 @@ A 16-bit pixel art survival game built in Godot 4.4 with GDScript. Fight against
 | Inventory (20-slot grid, weight, stacking) | Done |
 | Crafting (10 recipes, 4 tech tiers) | Done |
 | Survival (hunger, thirst, starvation damage) | Done |
-| HUD (HP/Stamina/XP/Hunger/Thirst, minimap, abilities) | Done |
+| **Temperature System (cold/heat, frostbite)** | **V2** |
+| **Injury System (bleeding, broken limb, infection, burn)** | **V2** |
+| **Sleep Deprivation (hallucinations, collapse)** | **V2** |
+| **Food Spoilage** | **V2** |
+| HUD (HP/Stamina/XP/Hunger/Thirst/Temp/Sleep, minimap) | Done |
 | 3 Player Abilities (EMP, Cloak, Shield) | Done |
+| **Skill Tree (27 skills, 3 branches)** | **V2** |
+| **Character Backgrounds (Soldier/Scientist/Survivalist)** | **V2** |
+| **Emotional State (fear/determination/despair/hope)** | **V2** |
+| **Life Dilemmas (6 moral choices with consequences)** | **V2** |
+| **Branching Dialogue System (3 NPC trees, portraits)** | **V2** |
+| **Quest Journal (10 quests, lore collection)** | **V2** |
+| **Character Sheet (full stat display)** | **V2** |
+| **World Map (fog of war, POI markers)** | **V2** |
+| **NEXUS AI Director (adaptive difficulty, escalation)** | **V2** |
+| **Points of Interest (8 types, dynamic spawning)** | **V2** |
+| **Environmental Puzzles (5 types, multi-step)** | **V2** |
+| **Morality Tracking (pragmatic/compassionate/ruthless)** | **V2** |
 | Level-Up Stat Selection | Done |
 | Missions & Story (6 missions, NEXUS terminals) | Done |
 | World Structures (cabins, bunkers, outposts) | Done |
@@ -29,18 +89,11 @@ A 16-bit pixel art survival game built in Godot 4.4 with GDScript. Fight against
 | Visual Effects (hit flash, dust, camera lookahead) | Done |
 | Procedural Audio (12 retro SFX types) | Done |
 | Screen Effects (damage/heal/levelup flash) | Done |
-| Footstep sounds | Done |
 | Status Effects (poison, slow, stun) | Done |
 | Combo Counter (3x→10x tracking) | Done |
 | Campfires (rest points, HP regen) | Done |
 | Loot Crates (breakable containers) | Done |
 | NPC Survivors (dialogue, rewards) | Done |
-| Attack Trails (melee arc visual) | Done |
-| Squash/Stretch animations | Done |
-| Tutorial Hints (contextual) | Done |
-| Enemy Health Bars | Done |
-| Ambient Audio (wind, crickets, combat pulse) | Done |
-| Auto-save on day change | Done |
 | Weather System (rain, snow, fog, storm) | Done |
 | Environmental Hazards (toxic, electric, NEXUS) | Done |
 | Resource Nodes (berry, scrap, crystal) | Done |
@@ -57,8 +110,12 @@ A 16-bit pixel art survival game built in Godot 4.4 with GDScript. Fight against
 | **Left Click** | Melee attack (3-hit combo) |
 | **Right Click** | Shoot arrow (requires arrows) |
 | **Space** | Dodge roll (i-frames) |
-| **E** | Interact (terminals, structures) |
+| **E** | Interact (terminals, NPCs, puzzles, POIs) |
 | **I** | Inventory / Crafting |
+| **T** | Skill Tree |
+| **J** | Quest Journal |
+| **C** | Character Sheet |
+| **M** | World Map |
 | **1** | EMP Pulse (unlocks Lv3) |
 | **2** | Cloaking (unlocks Lv5) |
 | **3** | Signal Shield (unlocks Lv8) |
@@ -77,81 +134,65 @@ godot --headless --export-release "HTML5" build/index.html
 python3 -m http.server 8080 -d build/
 ```
 
-## Enemy Types
+## Skill Tree
 
-| Enemy | HP | Speed | Behavior |
-|-------|-----|-------|----------|
-| **Scout Drone** | 15 | Fast | Circle patrol, alerts nearby enemies when player spotted |
-| **Patrol Bot** | 60 | Slow | Route patrol, 60% front armor, charge attack |
-| **Harvester** | 120 | Very Slow | Deploys capture nets (slows player), relentless pursuit |
-| **Mind Probe** | 20 | Medium | Invisible until close, drains stamina, flickers in/out |
-| **Sentinel** | 250 | Medium | Boss — 3 combat phases, adapts to your tactics, summons drones |
+### Combat Branch (9 skills)
+| Skill | Cost | Effect |
+|-------|------|--------|
+| Power Strike | 1 | +20% melee damage |
+| Berserker Rage | 2 | Below 30% HP: +50% attack speed/damage |
+| Shield Bash | 1 | Dodge into enemies to stun 1.5s |
+| Counter-Attack | 2 | Perfect dodge triggers free 2x damage hit |
+| Dual Wield | 2 | Combo hits twice per swing |
+| Execute | 3 | Instant kill enemies below 10% HP |
+| Thick Skin | 1 | +5 defense, +25 max HP |
+| War Cry | 2 | Frighten enemies, -30% their damage 8s |
+| Bloodlust | 3 | Each kill heals 10 HP, +5% attack 10s |
 
-### Sentinel Phases
-1. **Ranged**: Keeps distance, shoots projectiles
-2. **Melee Rush**: Aggressive charge when player uses ranged attacks
-3. **Shield + Summon**: Defensive mode at low HP, calls Scout Drones
+### Stealth Branch (9 skills)
+| Skill | Cost | Effect |
+|-------|------|--------|
+| Silent Movement | 1 | Enemy detection range -30% |
+| Backstab | 2 | 3x damage to unaware enemies |
+| Distraction Throw | 1 | Throw noise maker to lure enemies |
+| Camouflage | 2 | Stand still 2s to become invisible |
+| Pickpocket | 2 | Steal components from unaware enemies |
+| Runner | 1 | +25% sprint speed, +15% dodge distance |
+| Night Owl | 2 | Night bonuses: +20% speed, +15% crit |
+| Shadow Strike | 3 | 5x damage from camouflage, stuns 3s |
+| Ghost | 3 | Dodge leaves afterimage enemies attack |
 
-## Player Abilities
+### Tech Branch (9 skills)
+| Skill | Cost | Effect |
+|-------|------|--------|
+| Scanner | 1 | Reveal enemies/items on minimap |
+| Turret Deployment | 2 | Place auto-turret (30s, 10 dmg/shot) |
+| EMP Upgrade | 2 | +50% range, +2s stun, damages machines |
+| Drone Hijacking | 2 | Convert stunned drones to allies 60s |
+| NEXUS Mimicry | 3 | Disguise as NEXUS unit 15s |
+| Scavenger | 1 | +50% enemy loot, double crate items |
+| Field Repair | 2 | -25% craft cost, craft without workbench |
+| Overcharge | 2 | -30% tech ability cooldowns |
+| Singularity Core | 3 | Gravity well pulling and damaging enemies |
 
-| Ability | Unlock | Cooldown | Effect |
-|---------|--------|----------|--------|
-| EMP Pulse | Level 3 | 15s | Stuns all enemies in range for 3 seconds |
-| Cloaking | Level 5 | 20s | Invisible + invincible for 5 seconds |
-| Signal Shield | Level 8 | 25s | Block all damage for 3 seconds |
+## Character Backgrounds
 
-## Crafting Recipes
+| Background | Bonuses | Playstyle |
+|-----------|---------|-----------|
+| **Soldier** | +5 ATK, +3 DEF, +20 HP | Combat-focused, tanky |
+| **Scientist** | +10% Crit, +20 Stamina | Technical, analytical |
+| **Survivalist** | +30 Hunger/Thirst, +15 Speed | Endurance, exploration |
 
-| Item | Ingredients | Tier |
-|------|-------------|------|
-| Bandage (heal 25 HP) | 1 Scrap Metal | Primitive |
-| Arrow x5 | 1 Scrap Metal | Primitive |
-| Cooked Meat (50 hunger) | 1 Canned Food | Primitive |
-| Makeshift Blade (+5 atk) | 5 Scrap + 2 Wire | Scavenged |
-| Leather Armor (+3 def) | 8 Scrap Metal | Scavenged |
-| EMP Device | 2 Circuit + 1 Battery + 3 Wire | Reverse-Engineered |
-| Reinforced Blade (+12 atk) | 10 Scrap + 2 Circuit + 5 Wire | Reverse-Engineered |
-| Signal Jammer | 3 Circuit + 2 Battery + 5 Wire | Reverse-Engineered |
-| NEXUS Blade (+25 atk) | 5 Circuit + 3 Battery + 10 Scrap + 8 Wire | NEXUS Tech |
-| NEXUS Shield (+10 def) | 4 Circuit + 4 Battery + 8 Scrap | NEXUS Tech |
+## Life Dilemmas
 
-## Level-Up Stats
-
-On each level up, choose one of three random upgrades:
-- **Vitality**: +20 Max HP
-- **Endurance**: +15 Max Stamina
-- **Strength**: +4 Attack
-- **Toughness**: +3 Defense
-- **Precision**: +5% Crit Chance
-- **Swiftness**: +15 Speed
-
-## Story
-
-Year 2029. You are **Dr. Kael Morrow**, ex-AI safety researcher who went off-grid in Alaska.
-
-**NEXUS**, born from Project Helios, has absorbed all connected systems. It doesn't want to destroy — it wants to **understand**. Every captured human is a data point. Every experiment, a question.
-
-Discover the truth through 6 story missions and NEXUS terminal logs:
-1. **The First Signal** — Something broadcasts nearby
-2. **Clear the Skies** — Destroy scout drones mapping your area
-3. **Breaking the Patrol** — Destroy patrol bots guarding supplies
-4. **The Truth About NEXUS** — Find data terminals revealing its nature
-5. **The Harvester Problem** — Stop harvesters capturing survivors
-6. **Singularity** — Make your final choice: merge or resist
-
-## World
-
-The procedural world features 5 biomes generated with FastNoiseLite:
-- **Forest** — Dense trees, good cover
-- **Snow** — Cold, open terrain
-- **Swamp** — Murky, toxic water patches
-- **Ruins** — Collapsed buildings, loot
-- **Mountain** — Rocky, limited movement
-
-Structures spawn as you explore:
-- **Cabins** — Safe houses with basic loot
-- **Bunkers** — Advanced loot + data terminals
-- **NEXUS Outposts** — Story terminals, guarded areas
+| Dilemma | When | Choices |
+|---------|------|---------|
+| A Dying Stranger | Has bandage | Give medkit / Keep it / Take their supplies |
+| NEXUS Data Terminal | Day 2+ | Download (tracked) / Destroy (safe) |
+| Strength in Numbers | Day 5+ | Join raid / Refuse (they die) |
+| A Child Alone | Day 3+ | Take with you (slow + food) / Give directions |
+| What Remains | Day 7+ | Free hybrid / Leave them / Destroy pod |
+| They Found You | Day 10+ | Fight the wave / Abandon shelter |
 
 ## Architecture
 
@@ -161,37 +202,27 @@ scenes/
   player/Player.tscn         # CharacterBody2D with combat
   enemies/                   # ScoutDrone, PatrolBot, Harvester, MindProbe, Sentinel
   ui/                        # HUD, Inventory, PauseMenu, TitleScreen, DeathScreen
-  world/                      # Terminal, NPC, Campfire, LootCrate, EnvHazard, ResourceNode
-  items/ItemDrop.tscn         # Pickup items with bob animation
+                             # BackgroundSelect, SkillTreeUI, JournalUI, CharacterSheet
+                             # WorldMapUI, DilemmaUI, DialogueUI
+  world/                     # Terminal, NPC, Campfire, LootCrate, EnvHazard, ResourceNode, EnvPuzzle
+  items/ItemDrop.tscn        # Pickup items with bob animation
   effects/Projectile.tscn    # Arrow/enemy projectiles
 
 scripts/
   autoload/                  # GameManager, AudioManager, CameraManager, SaveManager
   player/                    # Player controller, abilities, sprite generation
   enemies/                   # EnemyBase + 5 enemy types
-  systems/                   # Inventory, Crafting, WorldGen, Spawners, Missions, Weather, etc
-  ui/                        # HUD, Inventory, Pause, Title, Death, LevelUp, Combo, Tutorial
+  systems/                   # Inventory, Crafting, WorldGen, Spawners, Missions, Weather
+                             # SkillTree, EmotionalState, DilemmaSystem, DialogueSystem
+                             # QuestJournal, NEXUSDirector, POISystem, EnvPuzzle, Survival
+  ui/                        # All UI controllers
   effects/                   # Dust particles, Hit flash, Attack trail, Screen effects
 ```
-
-## Game Feel Features
-
-- **Hitstop**: 2-4 frame freeze on melee impact (scales with combo)
-- **Screen Shake**: On hits, crits, abilities (quadratic falloff)
-- **Knockback**: Enemies pushed away on hit, combo increases force
-- **Damage Numbers**: Float up and fade, bigger for crits
-- **Camera Lookahead**: Camera leads in movement direction
-- **Dodge Dust**: Particle burst on dodge roll
-- **Hit Flash**: White circle at impact point
-- **Invincibility Flash**: Rapid alpha oscillation
-- **Enemy Death**: Squash + red fade animation
-- **Sprint Feel**: Faster footstep interval
-- **Low HP Vignette**: Pulsing red overlay when below 30% HP
 
 ## Tech
 
 - **Engine**: Godot 4.4.1
-- **Language**: GDScript — 68 files, ~5900 lines, no script over 400 lines
+- **Language**: GDScript — 64 files, ~9,900 lines, no script over 400 lines
 - **Resolution**: 480x270 (16:9, 2x scaled to 960x540)
 - **Physics**: CharacterBody2D with 6 collision layers
 - **World**: Procedural TileMapLayer with FastNoiseLite (chunk-based)
@@ -199,4 +230,5 @@ scripts/
 - **Weather**: Dynamic rain/snow/fog/storm with particle rendering
 - **All art**: Generated programmatically — zero external assets
 - **Signals**: Decoupled event system throughout
-- **40+ features**: See system status table above
+- **V2 Systems**: Skill tree, emotional state, dilemmas, dialogue, NEXUS AI director, POIs, puzzles, world map
+- **64+ features**: See system status table above
