@@ -41,6 +41,11 @@ A 16-bit pixel art survival game built in Godot 4.4 with GDScript. Fight against
 | Enemy Health Bars | Done |
 | Ambient Audio (wind, crickets, combat pulse) | Done |
 | Auto-save on day change | Done |
+| Weather System (rain, snow, fog, storm) | Done |
+| Environmental Hazards (toxic, electric, NEXUS) | Done |
+| Resource Nodes (berry, scrap, crystal) | Done |
+| Difficulty Scaling Indicator | Done |
+| Finisher Combo (3rd hit slam) | Done |
 
 ## How to Play
 
@@ -156,7 +161,7 @@ scenes/
   player/Player.tscn         # CharacterBody2D with combat
   enemies/                   # ScoutDrone, PatrolBot, Harvester, MindProbe, Sentinel
   ui/                        # HUD, Inventory, PauseMenu, TitleScreen, DeathScreen
-  world/Terminal.tscn         # Interactive story terminals
+  world/                      # Terminal, NPC, Campfire, LootCrate, EnvHazard, ResourceNode
   items/ItemDrop.tscn         # Pickup items with bob animation
   effects/Projectile.tscn    # Arrow/enemy projectiles
 
@@ -164,9 +169,9 @@ scripts/
   autoload/                  # GameManager, AudioManager, CameraManager, SaveManager
   player/                    # Player controller, abilities, sprite generation
   enemies/                   # EnemyBase + 5 enemy types
-  systems/                   # Inventory, Crafting, WorldGen, Spawners, Missions, Structures
-  ui/                        # HUD, Inventory UI, Pause, Title, Death, LevelUp, Notifications
-  effects/                   # Dust particles, Hit flash, Screen effects
+  systems/                   # Inventory, Crafting, WorldGen, Spawners, Missions, Weather, etc
+  ui/                        # HUD, Inventory, Pause, Title, Death, LevelUp, Combo, Tutorial
+  effects/                   # Dust particles, Hit flash, Attack trail, Screen effects
 ```
 
 ## Game Feel Features
@@ -186,10 +191,12 @@ scripts/
 ## Tech
 
 - **Engine**: Godot 4.4.1
-- **Language**: GDScript (no script over 400 lines)
+- **Language**: GDScript — 68 files, ~5900 lines, no script over 400 lines
 - **Resolution**: 480x270 (16:9, 2x scaled to 960x540)
 - **Physics**: CharacterBody2D with 6 collision layers
 - **World**: Procedural TileMapLayer with FastNoiseLite (chunk-based)
 - **Audio**: Procedural WAV generation (AudioStreamWAV, 22050Hz)
+- **Weather**: Dynamic rain/snow/fog/storm with particle rendering
 - **All art**: Generated programmatically — zero external assets
 - **Signals**: Decoupled event system throughout
+- **40+ features**: See system status table above
