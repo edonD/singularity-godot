@@ -5,6 +5,8 @@ extends Node2D
 const ScoutDroneScene := preload("res://scenes/enemies/ScoutDrone.tscn")
 const PatrolBotScene := preload("res://scenes/enemies/PatrolBot.tscn")
 const HarvesterScene := preload("res://scenes/enemies/Harvester.tscn")
+const MindProbeScene := preload("res://scenes/enemies/MindProbe.tscn")
+const SentinelScene := preload("res://scenes/enemies/Sentinel.tscn")
 
 const MAX_ENEMIES := 30
 const SPAWN_INTERVAL := 3.0
@@ -13,6 +15,7 @@ const MAX_SPAWN_DIST := 300.0
 
 var _spawn_timer: float = 0.0
 var _enemy_count: int = 0
+var _sentinel_spawned: bool = false
 
 
 func _ready() -> void:
@@ -36,20 +39,24 @@ func _spawn_enemy() -> void:
 		return
 
 	var player_pos := GameManager.player.global_position
-
-	# Pick random spawn position away from player
 	var angle := randf() * TAU
 	var dist := randf_range(MIN_SPAWN_DIST, MAX_SPAWN_DIST)
 	var spawn_pos := player_pos + Vector2(cos(angle), sin(angle)) * dist
 
-	# Pick enemy type based on day/difficulty
 	var day := GameManager.day
 	var roll := randf()
 	var enemy: Node2D
 
-	if roll < 0.5:
+	# Spawn table scales with day
+	if day >= 5 and not _sentinel_spawned and roll < 0.05:
+		# Rare sentinel spawn after day 5
+		enemy = SentinelScene.instantiate()
+		_sentinel_spawned = true
+	elif day >= 3 and roll < 0.15:
+		enemy = MindProbeScene.instantiate()
+	elif roll < 0.4:
 		enemy = ScoutDroneScene.instantiate()
-	elif roll < 0.8 or day < 3:
+	elif roll < 0.7 or day < 2:
 		enemy = PatrolBotScene.instantiate()
 	else:
 		enemy = HarvesterScene.instantiate()
@@ -57,8 +64,6 @@ func _spawn_enemy() -> void:
 	enemy.global_position = spawn_pos
 
 	# Scale difficulty with day
-	if enemy.is_in_group("enemies") or enemy.has_method("take_damage"):
-		pass # Group added in _ready
 	var scale_factor := 1.0 + (day - 1) * 0.15
 	enemy.set("max_hp", int(enemy.get("max_hp") * scale_factor) if enemy.get("max_hp") else 30)
 	enemy.set("attack_damage", int(enemy.get("attack_damage") * scale_factor) if enemy.get("attack_damage") else 8)
