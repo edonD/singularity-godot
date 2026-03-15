@@ -8,12 +8,37 @@ static func generate_player_texture() -> ImageTexture:
 	var img := Image.create(16, 16, false, Image.FORMAT_RGBA8)
 	img.fill(Color.TRANSPARENT)
 
-	# Body (dark jacket)
+	# Body colors based on background
+	var bg: String = GameManager.player_stats.get("background", "soldier")
 	var body_color := Color(0.2, 0.25, 0.35)
 	var skin_color := Color(0.85, 0.7, 0.55)
 	var hair_color := Color(0.15, 0.12, 0.1)
 	var boot_color := Color(0.25, 0.2, 0.15)
 	var accent := Color(0.4, 0.6, 0.8)
+
+	# Background-specific palette
+	match bg:
+		"soldier":
+			body_color = Color(0.2, 0.3, 0.2) # Military green
+			accent = Color(0.4, 0.5, 0.3)
+			boot_color = Color(0.2, 0.2, 0.15)
+		"scientist":
+			body_color = Color(0.25, 0.25, 0.35) # Lab coat blue-grey
+			accent = Color(0.5, 0.6, 0.8)
+			hair_color = Color(0.2, 0.15, 0.1)
+		"survivalist":
+			body_color = Color(0.3, 0.25, 0.2) # Leather brown
+			accent = Color(0.5, 0.4, 0.3)
+			boot_color = Color(0.3, 0.2, 0.1)
+
+	# Equipment modifies colors
+	var s := GameManager.player_stats
+	if s.defense >= 13: # NEXUS Shield
+		accent = Color(0.2, 0.6, 1.0) # Glowing blue
+	elif s.defense >= 8: # Leather armor
+		body_color = Color(0.4, 0.3, 0.2)
+	if s.attack >= 35: # NEXUS Blade
+		accent = Color(0.2, 0.8, 0.6) # NEXUS green
 
 	# Hair (rows 1-3)
 	for x in range(5, 11):
